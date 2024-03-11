@@ -1,0 +1,4 @@
+npx hardhat node
+npx hardhat run scripts/deploy.js --network localhost
+copy ChatApp.json to context folder
+npm run dev

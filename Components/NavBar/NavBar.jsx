@@ -28,7 +28,7 @@ const NavBar = () => {
    },
    {
     menu: "FAQS",
-    link: "/",
+    link: "faq",
    },
    {
     menu: "TERMS OF USE",

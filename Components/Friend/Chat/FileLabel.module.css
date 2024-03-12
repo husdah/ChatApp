@@ -20,11 +20,11 @@
   transition: 200ms color;
 }
 .filelabel:hover {
-  border: 2px solid #f182035b;
+  border: 2px solid var(--danger);
 }
 .filelabel:hover i,
 .filelabel:hover .title {
-  color: #f182035b;
+  color: var(--danger);
 }
 .FileUpload1{
   display: none;

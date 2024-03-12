@@ -134,7 +134,7 @@ const Chat = ({
                   )}
 
                   {el.msg && (
-                    <p key={i + 1}>
+                    <p key={i + 1} className={el.sender === chatData.address ? Style.msgR : Style.msgS}>
                       {el.msg}
                       {""}
                       {""}

@@ -14,8 +14,7 @@
     overflow-y: scroll;
 }
 
-.Chat_box_right p,
-.Chat_box_left p{
+.Chat_box_right p{
     background-color: var(--danger);
     padding: 1rem;
     border-top-right-radius: .5rem;
@@ -23,6 +22,22 @@
     border-bottom-left-radius: .5rem;
     position: relative;
 } 
+
+.Chat_box_left p{
+    padding: 1rem;
+    border-top-right-radius: .5rem;
+    border-top-left-radius: .5rem;
+    border-bottom-left-radius: .5rem;
+    position: relative;
+} 
+
+.msgR{
+    background-color: gray;
+}
+
+.msgS{
+    background-color: var(--danger);
+}
 
 .Chat_box_left_title{
     display: flex;
@@ -39,7 +54,8 @@
 
 .Chat_box_send_img .inputMsg{
     width: 100%;
-    background-color: var(--danger);
+    /* background-color: var(--danger); */
+    background-color: var(--dark);
     outline: none;
     border: none;
     padding: 1rem;

@@ -1,15 +1,21 @@
-import React,{useState, useContext} from "react";
+import React,{useState, useContext, useEffect} from "react";
 import Image from 'next/image';
 
 //INTERNAL IMPORT
 import Style from './Filter.module.css';
 import images from '../../assets';
 import { ChatAppContext } from '../../Context/ChatAppContext';
-import { Model } from '../index';
+/* import { Model } from '../index'; */
 
 const Filter = () => {
-  const { account, addFriends } = useContext(ChatAppContext);
-  const [addFriend, setAddFriend] = useState(false);
+  /* const { account, addFriends, searchFriendList } = useContext(ChatAppContext); */
+  const { searchFriendList } = useContext(ChatAppContext);
+  /* const [addFriend, setAddFriend] = useState(false); */
+  const [search, setSearch] = useState('');
+
+  useEffect(() => {
+    searchFriendList(search);
+  }, [search]);
 
   return (
     <div className={Style.Filter}>
@@ -17,7 +23,12 @@ const Filter = () => {
         <div className={Style.Filter_box_left}>
           <div className={Style.Filter_box_left_search}>
             <Image src={images.search} alt="image" width={20} height={20} />
-            <input type="text" placeholder="searc.." />
+            <input 
+              type="text" 
+              placeholder="searc.."
+              value={search}
+              onChange={e => setSearch(e.target.value)} 
+            />
           </div>
         </div>
         <div className={Style.Filter_box_right}>
@@ -25,15 +36,15 @@ const Filter = () => {
             <Image src={images.clear} alt="clear" width={20} height={20} />
             CLEAR CHAT
           </button>
-          <button onClick={()=> setAddFriend(true)}>
+          {/* <button onClick={()=> setAddFriend(true)}>
             <Image src={images.user} alt="user" width={20} height={20} />
             ADD FRIEND
-          </button>
+          </button> */}
         </div>
       </div>
 
       {/* Model component */}
-      {addFriend && (
+      {/* {addFriend && (
         <div className={Style.Filter_model}>
           <Model 
             openBox={setAddFriend}
@@ -45,7 +56,7 @@ const Filter = () => {
             functionName = {addFriends}
           />
         </div>
-      )}
+      )} */}
     </div>
   )
 };

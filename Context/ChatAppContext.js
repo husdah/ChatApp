@@ -15,6 +15,7 @@ export const ChatAppProvider = ({children})=>{
     const [loading, setLoading] = useState(false);
     const [userLists, setUserLists] = useState([]);
     const [error, setError] = useState("");
+    const [searchList, setSearchList] = useState([]);
 
     //CHAT USER DATA
     const [currentUserName, setCurrentUserName] = useState('');
@@ -95,21 +96,21 @@ export const ChatAppProvider = ({children})=>{
         }
     }
 
-    //SEND MESSAGE TO YOUR FRIEND 
-    /* const sendMessage = async({msg, address})=>{
+    // Search Freinds List 
+    const searchFriendList = async (search) => {
         try {
-            //if(msg || address) return setError("Please Type your Message");
-
-            const contract = await connectingWithContract();
-            const addMessage = await contract.sendMessage(address, msg);
-            setLoading(true);
-            await addMessage.wait();
-            setLoading(false);
-            window.location.reload();
+        const contract = await connectingWithContract();
+        const allFriends = await contract.getMyFriendList();
+    
+        const filteredFriends = allFriends.filter(friend => {
+            return friend.name.toLowerCase().includes(search.toLowerCase());
+        });
+    
+        setSearchList(filteredFriends);
         } catch (error) {
-            setError("Please reload and try again.");
+        setError("Please reload and try again.");
         }
-    } */
+    }
 
     // SEND MESSAGE TO YOUR FRIEND
     const sendMessage = async ({ msg, address, file, msgType }) => {
@@ -188,7 +189,9 @@ export const ChatAppProvider = ({children})=>{
                 userLists,
                 error,
                 currentUserName,
-                currentUserAddress
+                currentUserAddress,
+                searchFriendList,
+                searchList
             }}>
             {children}
         </ChatAppContext.Provider>

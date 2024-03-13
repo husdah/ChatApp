@@ -68,7 +68,7 @@ const Chat = ({
 
   const [lightboxController, setLightboxController] = useState({
 		toggler: false,
-		sources: ""
+		sources: []
 	});
 
   const openLightboxForImage = (imageIndex) => {
@@ -98,7 +98,7 @@ const Chat = ({
   console.log("friendMsg",friendMsg);
   
   return (
-    <div className={Style.Chat}>
+    <div className={chatData.name && chatData.address ? Style.Chat : Style.ChatHidden}>
       {currentUserName && currentUserAddress ? (
         <div className={Style.Chat_user_info}>
           <Image src={images.accountName} alt="image" width={70} height={70} />
@@ -183,7 +183,7 @@ const Chat = ({
                 <IoMdAttach />
               }
               <span className={Style2.title} style={{ color: fileLabelColor }}>
-                {fileName ? (fileName.length > 10 ? `${fileName.slice(0, 4)}...${fileName.split('.').pop()}` : fileName) : "Add File"}
+                {fileName ? (fileName.length > 10 ? `${fileName.slice(0, 4)}...${fileName.split('.').pop()}` : fileName) : "File"}
               </span>
               <input className={Style2.FileUpload1} id="FileInput" name="booking_attachment" type="file" onChange={handleFileChange} />
             </label>

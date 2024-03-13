@@ -2,8 +2,10 @@ import React,{useEffect, useState} from "react";
 import Image from 'next/image';
 import { useRouter } from 'next/router'
 import FsLightbox from "fslightbox-react";
-import { FaImage, FaFilePdf, FaFile } from "react-icons/fa"
+import { FaImage, FaFilePdf, FaFile, FaFileVideo } from "react-icons/fa"
 import { IoMdAttach } from "react-icons/io"
+import data from '@emoji-mart/data'
+import Picker from '@emoji-mart/react'
 
 //INTERNAL IMPORT
 import Style from './Chat.module.css';
@@ -11,6 +13,7 @@ import Style2 from './FileLabel.module.css';
 import images from '../../../assets';
 import { converTime } from '../../../Utils/apiFeature';
 import { Loader } from '../../index';
+import { all } from "axios";
 
 const Chat = ({
   functionName,
@@ -59,7 +62,12 @@ const Chat = ({
       setFileType("dox");
       setMsgType("file");
       setFileLabelColor("#2388df");
-    } else {
+    } else if (extension === "mp4") {
+      setFileType("video");
+      setMsgType("video");
+      setFileLabelColor("#208440");
+    }
+     else {
       setFileType("file");
       setMsgType("text");
       setFileLabelColor("black");
@@ -78,6 +86,11 @@ const Chat = ({
       toggler: !lightboxController.toggler,
       sources: [clickedImageSource],
     });
+  };
+
+  const [showEmojiPicker, setShowEmojiPicker] = useState(false);
+  const toggleEmojiPicker = () => {
+    setShowEmojiPicker(!showEmojiPicker);
   };
 
   const router = useRouter();
@@ -120,7 +133,7 @@ const Chat = ({
                       <Image src={images.accountName} alt="image" width={50} height={50} />
                       <span>
                         {chatData.name} {""}
-                        <small>Time: {converTime(el.timestamp)}</small>
+                        <small className={Style.time}>Time: {converTime(el.timestamp)}</small>
                       </span>
                     </div>
                   ) : (
@@ -128,7 +141,7 @@ const Chat = ({
                       <Image src={images.accountName} alt="image" width={50} height={50} />
                       <span>
                         {userName} {""}
-                        <small>Time: {converTime(el.timestamp)}</small>
+                        <small className={Style.time}>Time: {converTime(el.timestamp)}</small>
                       </span>
                     </div>
                   )}
@@ -154,6 +167,10 @@ const Chat = ({
               <a href={`https://gateway.pinata.cloud/ipfs/${el.fileHash}`} target="_blank" download={true}>
                 <FaFile size={100} />
               </a>
+            ) : el.fileHash && el.msgType === "video" ? (
+              <div onClick={() => openLightboxForImage(i)}>
+                <FaFileVideo size={100} />
+              </div>
             ) : null}
 
               </div>
@@ -168,18 +185,37 @@ const Chat = ({
             sources={lightboxController.sources}
         />
 
+        {showEmojiPicker && (
+          <Picker
+            data={data}
+            onEmojiSelect={(emoji) => setMessage(prevMessage => prevMessage + emoji.native)}
+            showPreview={false}
+            showSkinTones={false}
+            autoFocus={true}
+            emojiSize={24}
+          />
+        )}
+
         {currentUserName && currentUserAddress ? (
           <div className={Style.Chat_box_send}>
             <div className={Style.Chat_box_send_img}>
-              <Image src={images.smile} alt="smile" width={50} height={50} />
-            
-              <input className={Style.inputMsg} type="text" placeholder="type your message" onChange={(e) => setMessage(e.target.value)} />
               
+              <Image
+                src={images.smile}
+                alt="smile"
+                width={50}
+                height={50}
+                onClick={toggleEmojiPicker}
+              />
+
+              <input className={Style.inputMsg} type="text" placeholder="type your message" value={message} onChange={(e) => setMessage(e.target.value)} />
+
               <label className={Style2.filelabel} style={{ border: `2px solid ${fileLabelColor}` }}>
               {
                 fileType === "image" ? <FaImage /> : 
                 fileType === "pdf" ? <FaFilePdf /> : 
                 fileType === "dox" ? <FaFile /> :
+                fileType === "video" ? <FaFileVideo /> :
                 <IoMdAttach />
               }
               <span className={Style2.title} style={{ color: fileLabelColor }}>

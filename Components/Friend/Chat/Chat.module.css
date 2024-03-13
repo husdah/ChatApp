@@ -83,6 +83,10 @@
     line-height: 0;
 }
 
+.time{
+    color: grey;
+}
+
 @media only screen and (max-width: 35em) {
     .Chat{
         padding: 1rem;

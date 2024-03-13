@@ -49,19 +49,22 @@ export const connectingWithContract = async () => {
     }
 }
 
-export const converTime = (time) =>{
-    const newTime =  new Date(time.toNumber());
-    const realTime = newTime.getHours() +
-    "/" +
-    newTime.getMinutes() +
-    "/" +
-    newTime.getSeconds() +
-    " Date:" +
-    newTime.getDate() +
-    "/" +
-    (newTime.getMonth() + 1) +
-    "/" +
-    newTime.getFullYear();
+export const converTime = (timestampInSeconds) => {
+    const timestampInMilliseconds = timestampInSeconds * 1000; // Convert seconds to milliseconds
+    const newTime = new Date(timestampInMilliseconds);
 
-    return realTime;
+    if (isNaN(newTime.getTime())) {
+        return "Invalid Timestamp";
+    }
+
+    const hours = newTime.getHours();
+    const ampm = hours >= 12 ? 'PM' : 'AM';
+    const formattedHours = hours % 12 || 12; // Convert 0 to 12
+
+    const minutes = ("0" + newTime.getMinutes()).slice(-2);
+    const day = ("0" + newTime.getDate()).slice(-2);
+    const month = ("0" + (newTime.getMonth() + 1)).slice(-2);
+    const year = newTime.getFullYear();
+
+    return `${formattedHours}:${minutes} ${ampm} Date: ${day}/${month}/${year}`;
 }

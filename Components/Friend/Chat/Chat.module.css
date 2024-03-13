@@ -5,6 +5,10 @@
     overflow-y: scroll;
 }
 
+.ChatHidden{
+    display: none;
+}
+
 .Chat_box{
     display: grid;
     grid-template-columns: 1fr;

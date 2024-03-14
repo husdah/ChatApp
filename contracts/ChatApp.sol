@@ -14,17 +14,12 @@ contract ChatApp{
         string name;
     }
 
-    /* struct message{
-        address sender;
-        uint256 timestamp;
-        string msg;
-    } */
-
     struct message {
         address sender;
         uint256 timestamp;
         string msg;
         string fileHash; // Add this field for file metadata
+        string audioData;
         string msgType;
     }
 
@@ -103,24 +98,14 @@ contract ChatApp{
     }
 
     //SEND MESSAGE 
-/*     function sendMessage(address friend_key, string calldata _msg) external{
-        require(checkUserExists(msg.sender), "Create an account first");
-        require(checkUserExists(friend_key), "User is not registered");
-        require(checkAlreadyFriends(msg.sender, friend_key), "You are not friend with the given user");
-
-        bytes32 chatCode = _getChatCode(msg.sender, friend_key);
-        message memory newMsg = message(msg.sender, block.timestamp, _msg);
-        allMessages[chatCode].push(newMsg);
-    } */
-
-    function sendMessage(address friend_key, string calldata _msg, string calldata fileHash, string calldata msgType) external {
+    function sendMessage(address friend_key, string calldata _msg, string calldata fileHash, string calldata audioData, string calldata msgType) external {
         require(checkUserExists(msg.sender), "Create an account first");
         require(checkUserExists(friend_key), "User is not registered");
         require(checkAlreadyFriends(msg.sender, friend_key), "You are not friend with the given user");
         require(bytes(msgType).length > 0, "Message type cannot be empty");
 
         bytes32 chatCode = _getChatCode(msg.sender, friend_key);
-        message memory newMsg = message(msg.sender, block.timestamp, _msg, fileHash, msgType);
+        message memory newMsg = message(msg.sender, block.timestamp, _msg, fileHash, audioData , msgType);
         allMessages[chatCode].push(newMsg);
     }
 
@@ -129,6 +114,14 @@ contract ChatApp{
     function readMessage(address friend_key) external view returns(message[] memory){
         bytes32 chatCode = _getChatCode(msg.sender, friend_key);
         return allMessages[chatCode];
+    }
+
+    //DELETE CHAT
+    function clearChat(address friend_key) external {
+        bytes32 chatCode = _getChatCode(msg.sender, friend_key);
+
+        // Delete all messages associated with the chat code
+        delete allMessages[chatCode];
     }
 
     function getAllAppUser() public view returns(AllUserStruck[] memory){

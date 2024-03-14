@@ -83,7 +83,8 @@
     line-height: 0;
 }
 
-.time{
+.time,
+.show{
     color: grey;
 }
 

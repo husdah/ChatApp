@@ -114,8 +114,6 @@ const Chat = ({
     const sendMessageWithAudio = async () => {
       if (audioData) {
         console.log(audioData);
-       /*  await setMsgType('audio');
-        await sendMessage(); */
         await functionName({ msg: message, address: router.query.address, file, audioData: audioData, msgType: 'audio' });
         console.log("msgType",msgType);
         setMessage("");
@@ -190,7 +188,6 @@ const Chat = ({
 
                 {
                   el.audioData && (
-                    //<audio src={el.audioData} controls="controls" />
                     <AudioMsg audioDataHash={el.audioData} />
                   )
                 }

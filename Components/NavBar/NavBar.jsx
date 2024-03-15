@@ -11,7 +11,7 @@ import images from '../../assets';
 const NavBar = () => {
   const menuItems = [
    {
-    menu: "All Users",
+    menu: "EXPLORE",
     link: "/alluser",
    },
    {
@@ -19,8 +19,8 @@ const NavBar = () => {
     link: "/",
    },
    {
-    menu: "CONTACT",
-    link: "/",
+    menu: "CONTACTS",
+    link: "/contact",
    },
    {
     menu: "SETTING",

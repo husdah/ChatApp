@@ -8,5 +8,6 @@ import Friend from "./Friend/Friend";
 import Accordion from "./Accordion"
 import AudioRecording from "./AudioRecording/AudioRecording";
 import AudioMsg from "./AudioRecording/AudioMsg";
+import FriendCard from "./FriendCard/FriendCard";
 
-export { NavBar, Filter, Error, Loader, Model, UserCard, Friend, Accordion, AudioRecording, AudioMsg };
+export { NavBar, Filter, Error, Loader, Model, UserCard, Friend, Accordion, AudioRecording, AudioMsg,FriendCard };

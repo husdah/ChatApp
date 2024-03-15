@@ -92,6 +92,7 @@ export const ChatAppProvider = ({children})=>{
         }
     }
 
+
     //ADD YOUR FRIENDS
     const addFriends = async({name, accountAddress}) =>{
         try {

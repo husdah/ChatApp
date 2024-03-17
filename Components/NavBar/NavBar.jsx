@@ -198,10 +198,10 @@ const NavBar = () => {
           <Model
             openBox={setOpenModel}
             title={t('model.welcomeTo')}
-            head='CHAT BUDDY'
+            head='Chat Circuit'
             info={t('model.info')}
             smallInfo={t('model.kindlySelect')}
-            image={images.hero}
+            image={images.accountBg}
             functionName={createAccount}
             address={account}
           />

@@ -11,8 +11,36 @@ import { useTranslation } from 'react-i18next';
 import { FaAngleDown } from 'react-icons/fa';
 
 const NavBar = () => {
+
   const { t, i18n } = useTranslation();
   const { account, userName, connectWallet, createAccount, error } = useContext(ChatAppContext);
+
+  const menuItems = [
+   {
+    menu: "EXPLORE",
+    link: "/alluser",
+   },
+   {
+    menu: "CHAT",
+    link: "/",
+   },
+   {
+    menu: "CONTACTS",
+    link: "/contact",
+   },
+   {
+    menu: "SETTING",
+    link: "/",
+   },
+   {
+    menu: "FAQS",
+    link: "faq",
+   },
+   {
+    menu: "TERMS OF USE",
+    link: "/",
+   }
+  ];
 
   const [active, setActive] = useState(2);
   const [open, setOpen] = useState(false);

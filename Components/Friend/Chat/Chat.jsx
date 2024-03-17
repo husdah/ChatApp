@@ -1,4 +1,4 @@
-import React,{useEffect, useState} from "react";
+import React,{useEffect, useState, useContext} from "react";
 import Image from 'next/image';
 import { useRouter } from 'next/router'
 import FsLightbox from "fslightbox-react";
@@ -12,8 +12,8 @@ import Style from './Chat.module.css';
 import Style2 from './FileLabel.module.css';
 import images from '../../../assets';
 import { converTime } from '../../../Utils/apiFeature';
-import { Loader } from '../../index';
-import { all } from "axios";
+import { Loader, AudioRecording, AudioMsg } from '../../index';
+import { ChatAppContext } from '../../../Context/ChatAppContext';
 
 const Chat = ({
   functionName,
@@ -37,6 +37,8 @@ const Chat = ({
     name: '',
     address: ''
   });
+
+  const { audioData, setAudioBase64 } = useContext(ChatAppContext);
 
   const handleFileChange = (e) => {
     setFile(e.target.files[0]);
@@ -108,7 +110,37 @@ const Chat = ({
 
 }, [router.isReady, router.query.address]);
 
+  useEffect(() => {
+    const sendMessageWithAudio = async () => {
+      if (audioData) {
+        console.log(audioData);
+        await functionName({ msg: message, address: router.query.address, file, audioData: audioData, msgType: 'audio' });
+        console.log("msgType",msgType);
+        setMessage("");
+        setFile(null);
+        setFileName("");
+        setFileType("");
+        setMsgType("text");
+        setFileLabelColor("");
+        setAudioBase64('');
+      }
+    };
+
+    sendMessageWithAudio(); // Call the async function immediately
+  }, [audioData]);
+
   console.log("friendMsg",friendMsg);
+
+  const sendMessage = async () =>{
+    await functionName({ msg: message, address: router.query.address, file, audioData: audioData, msgType: msgType });
+    console.log("msgType",msgType);
+    setMessage("");
+    setFile(null);
+    setFileName("");
+    setFileType("");
+    setMsgType("text");
+    setFileLabelColor("");
+  }
   
   return (
     <div className={chatData.name && chatData.address ? Style.Chat : Style.ChatHidden}>
@@ -117,7 +149,7 @@ const Chat = ({
           <Image src={images.accountName} alt="image" width={70} height={70} />
           <div className={Style.Chat_user_info_box}>
             <h4>{currentUserName}</h4>
-            <p className={Style.show}>{currentUserAddress}</p>
+            <small className={Style.show}>{currentUserAddress}</small>
           </div>
         </div>
       ): ""}
@@ -153,6 +185,12 @@ const Chat = ({
                       {""}
                     </p>
                   )}
+
+                {
+                  el.audioData && (
+                    <AudioMsg audioDataHash={el.audioData} />
+                  )
+                }
 
             {el.fileHash && el.msgType === "image" ? (
               <div onClick={() => openLightboxForImage(i)}>
@@ -208,6 +246,8 @@ const Chat = ({
                 onClick={toggleEmojiPicker}
               />
 
+              <AudioRecording />
+              
               <input className={Style.inputMsg} type="text" placeholder="type your message" value={message} onChange={(e) => setMessage(e.target.value)} />
 
               <label className={Style2.filelabel} style={{ border: `2px solid ${fileLabelColor}` }}>
@@ -233,7 +273,7 @@ const Chat = ({
                     alt="send" 
                     width={50} 
                     height={50}
-                    onClick={() => {functionName({ msg: message, address: router.query.address, file, msgType: msgType }), console.log("msgType",msgType)}}
+                    onClick={sendMessage}
                   />
                 )
               }

@@ -1,5 +1,6 @@
 import React,{useState, useContext, useEffect} from "react";
 import Image from 'next/image';
+import { useRouter } from 'next/router'
 
 //INTERNAL IMPORT
 import Style from './Filter.module.css';
@@ -9,9 +10,11 @@ import { ChatAppContext } from '../../Context/ChatAppContext';
 
 const Filter = () => {
   /* const { account, addFriends, searchFriendList } = useContext(ChatAppContext); */
-  const { searchFriendList } = useContext(ChatAppContext);
+  const { searchFriendList, clearChat } = useContext(ChatAppContext);
   /* const [addFriend, setAddFriend] = useState(false); */
   const [search, setSearch] = useState('');
+
+  const router = useRouter();
 
   useEffect(() => {
     searchFriendList(search);
@@ -32,7 +35,7 @@ const Filter = () => {
           </div>
         </div>
         <div className={Style.Filter_box_right}>
-          <button>
+          <button onClick={() => clearChat(router.query.address)}>
             <Image src={images.clear} alt="clear" width={20} height={20} />
             CLEAR CHAT
           </button>

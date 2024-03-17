@@ -16,6 +16,7 @@ export const ChatAppProvider = ({children})=>{
     const [userLists, setUserLists] = useState([]);
     const [error, setError] = useState("");
     const [searchList, setSearchList] = useState([]);
+    const [audioData, setAudioData] = useState('');
 
     //CHAT USER DATA
     const [currentUserName, setCurrentUserName] = useState('');
@@ -62,6 +63,18 @@ export const ChatAppProvider = ({children})=>{
         }
     }
 
+    //DELETE CHAT
+    const clearChat = async (friendAddress) => {
+        try {
+            const contract = await connectingWithContract();
+            const clear = await contract.clearChat(friendAddress);
+            await clear.wait();
+            setFriendMsg([]);
+        } catch (error) {
+            setError("Error while clearing the chat. Please try again.");
+        }
+    };
+
     //CREATE ACCOUNT
     const createAccount = async({name, accountAddress})=>{
         try {
@@ -78,6 +91,7 @@ export const ChatAppProvider = ({children})=>{
             setError(error.message);
         }
     }
+
 
     //ADD YOUR FRIENDS
     const addFriends = async({name, accountAddress}) =>{
@@ -113,27 +127,31 @@ export const ChatAppProvider = ({children})=>{
     }
 
     // SEND MESSAGE TO YOUR FRIEND
-    const sendMessage = async ({ msg, address, file, msgType }) => {
+    const sendMessage = async ({ msg, address, file, audioData, msgType }) => {
         try {
         const contract = await connectingWithContract();
         let fileHash = '';
         let message = '';
         let type = msgType;
+        let audio = '';
 
         if(msg){
             message = msg;
         }
 
         if (file) {
-           // fileHash = await addToIPFS(file);
            fileHash = await pinFileToIPFS(file);
         }
 
-        const addMessage = await contract.sendMessage(address, message, fileHash, type);
+        if (audioData) {
+            audio = await pinBase64ToIPFS(audioData);
+        }
+
+        const addMessage = await contract.sendMessage(address, message, fileHash, audio, type);
         setLoading(true);
         await addMessage.wait();
         setLoading(false);
-        window.location.reload();
+        readMessage(address);
         } catch (error) {
             /* setError("Please reload and try again."); */
             setError(error.message);
@@ -171,6 +189,38 @@ export const ChatAppProvider = ({children})=>{
         }
     }
 
+
+    const pinBase64ToIPFS = async (base64Data) => {
+        try{
+
+            const pinataApiKey = '4c6574add2a3c92b4109';
+            const pinataSecretApiKey = '99a2c20a81fa3c47c96d2efc77a9e3c6ba87ef37b4bcb30a0f807fdfb05365ba';
+    
+            const url = 'https://api.pinata.cloud/pinning/pinJSONToIPFS';
+    
+            // Define your JSON data
+            const jsonData = {
+                base64: base64Data
+            };
+    
+            const headers = {
+                pinata_api_key: pinataApiKey,
+                pinata_secret_api_key: pinataSecretApiKey,
+                'Content-Type': 'application/json'
+            };
+
+            const responseData = await axios.post(url, jsonData, { headers });
+            const fileHash = responseData.data.IpfsHash;
+            return fileHash;
+        }catch(err){
+            console.log(err);
+        }
+    }
+
+    const setAudioBase64= (base64) =>{
+        setAudioData(base64);
+    }
+
     return(
         <ChatAppContext.Provider value={
             {
@@ -191,7 +241,10 @@ export const ChatAppProvider = ({children})=>{
                 currentUserName,
                 currentUserAddress,
                 searchFriendList,
-                searchList
+                searchList,
+                clearChat,
+                audioData,
+                setAudioBase64
             }}>
             {children}
         </ChatAppContext.Provider>

@@ -20,3 +20,8 @@
 .Card_box_left{
     border-radius: 50%;
 }
+.Card_box_right_middle small
+{
+    font-size: 0.8rem;
+    color: gray;
+}

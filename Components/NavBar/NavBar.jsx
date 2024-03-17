@@ -15,33 +15,6 @@ const NavBar = () => {
   const { t, i18n } = useTranslation();
   const { account, userName, connectWallet, createAccount, error } = useContext(ChatAppContext);
 
-  const menuItems = [
-   {
-    menu: "EXPLORE",
-    link: "/alluser",
-   },
-   {
-    menu: "CHAT",
-    link: "/",
-   },
-   {
-    menu: "CONTACTS",
-    link: "/contact",
-   },
-   {
-    menu: "SETTING",
-    link: "/",
-   },
-   {
-    menu: "FAQS",
-    link: "faq",
-   },
-   {
-    menu: "TERMS OF USE",
-    link: "/",
-   }
-  ];
-
   const [active, setActive] = useState(2);
   const [open, setOpen] = useState(false);
   const [openModel, setOpenModel] = useState(false);
@@ -205,12 +178,12 @@ const NavBar = () => {
           <div className={Style.NavBar_box_right_connect}>
             {account === "" ? (
               <button onClick={() => connectWallet()}>
-                <span>{t('navbar.connectWallet')}</span>
+                <span>{t('connectWallet.connectWallet')}</span>
               </button>
             ) : (
               <button onClick={() => setOpenModel(true)}>
                 <Image src={userName ? images.accountName : images.create2} alt="Account Image" width={20} height={20}/>
-                <small>{userName || t('navbar.createAccount')}</small>
+                <small>{userName || t('connectWallet.createAccount')}</small>
               </button>
             )}
           </div>

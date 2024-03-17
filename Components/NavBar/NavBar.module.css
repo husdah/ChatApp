@@ -177,12 +177,7 @@
     .mobile_menu_btn{
         padding-top: 2rem;
     }
-
-    .modelBox{
-        position: absolute;
-        inset: 0 0 -70% 0%;
-    }
-
+    
     .dropdownMenu{
         left: 130px;
     }

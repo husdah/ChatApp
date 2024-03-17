@@ -111,10 +111,10 @@ const NavBar = () => {
           <Model 
             openBox={setOpenModel}
             title= "WELCOME TO"
-            head= "CHAT BUDDY"
-            info= 'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Aut dolore laboriosam veritatis, tenetur maiores reiciendis consequuntur nam aliquam libero atque iure laborum ducimus. Laudantium labore iste autem molestiae temporibus ut?'
-            smallInfo= "Kindley select your name..."
-            image= {images.hero}
+            head= "Chat Circuit"
+            info= 'Connect with Others: Create Your Chat Account'
+            smallInfo= "Kindley set your name..."
+            image= {images.accountBg}
             functionName = {createAccount}
             address = {account}
           />

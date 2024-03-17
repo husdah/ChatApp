@@ -1,14 +1,20 @@
-import React, {useEffect, useState, useContext} from "react";
-import Link from 'next/link'
-import Image from 'next/image'
-
-//INTERNAL IMPORT
+import React, { useState, useContext, useEffect } from "react";
+import Link from 'next/link';
+import Image from 'next/image';
 import Style from './NavBar.module.css';
 import { ChatAppContext } from '../../Context/ChatAppContext';
 import { Model, Error } from '../index';
 import images from '../../assets';
+import LanguageSelector from '../Modal/LanguageSelector';
+import ThemeSelector from "../Modal/ThemeSelector";
+import { useTranslation } from 'react-i18next';
+import { FaAngleDown } from 'react-icons/fa';
 
 const NavBar = () => {
+
+  const { t, i18n } = useTranslation();
+  const { account, userName, connectWallet, createAccount, error } = useContext(ChatAppContext);
+
   const menuItems = [
    {
     menu: "EXPLORE",
@@ -36,13 +42,63 @@ const NavBar = () => {
    }
   ];
 
-  //USESTATE
   const [active, setActive] = useState(2);
   const [open, setOpen] = useState(false);
   const [openModel, setOpenModel] = useState(false);
+  const [showDropdown, setShowDropdown] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [themeModal, setThemeModal] = useState(false);
 
+  const menuItems = [
+    { menu: t('navbar.allUsers'), link: '/alluser' },
+    { menu: t('navbar.chat'), link: '/' },
+    { menu: t('navbar.contact'), link: '/' },
+    { menu: t('navbar.settings'), link: '/' },
+    { menu: t('navbar.faqs'), link: 'faq' },
+    { menu: t('navbar.termsOfUse'), link: '/terms' }
+  ];
 
-  const { account, userName, connectWallet, createAccount, error } = useContext(ChatAppContext);
+  useEffect(() => {
+    const storedTheme = localStorage.getItem('theme');
+    if (storedTheme) {
+      applyTheme(storedTheme);
+    } else {
+      applyTheme('dark');
+    }
+  }, []);
+
+  useEffect(() => {
+    const storedLanguage = localStorage.getItem('selectedLanguage');
+    if (storedLanguage) {
+      i18n.changeLanguage(storedLanguage);
+    }
+  }, []);
+
+  const applyTheme = (theme) => {
+    document.querySelector("body").setAttribute("data-theme", theme);
+  };
+
+  const handleSettingsClick = () => {
+    setShowDropdown(!showDropdown);
+  };
+
+  const handleLanguageClick = () => {
+    setShowModal(true);
+  };
+
+  const handleThemeClick = () => {
+    setThemeModal(true);
+  };
+
+  const handleThemeChange = (theme) => {
+    localStorage.setItem('theme', theme);
+    applyTheme(theme);
+  };
+
+  const handleMenuItemClick = (index) => {
+    setActive(index);
+  };
+
   return (
     <div className={Style.NavBar}>
       <div className={Style.NavBar_box}>
@@ -50,79 +106,139 @@ const NavBar = () => {
           <Image src={images.logo} alt="logo" width={50} height={50}/>
         </div>
         <div className={Style.NavBar_box_right}>
-
           {/* DESKTOP */}
           <div className={Style.NavBar_box_right_menu}>
             {menuItems.map((el, i) => (
-              <div onClick={()=> setActive(i +1)} key={i +1} className={`${Style.NavBar_box_right_menu_items} ${active == i +1 ? Style.active_btn : ""}`}>
-                <Link className={Style.NavBar_box_right_menu_items_link} href={el.link}>{el.menu}</Link>
-              </div>
-            ))}   
-          </div>
-
-         {/*  MOBILE */}
-         {open && (
-           <div className={Style.mobile_menu}>
-            {menuItems.map((el, i) => (
-              <div onClick={()=> setActive(i +1)} key={i +1} className={`${Style.mobile_menu_items} ${active == i +1 ? Style.active_btn : ""}`}>
-                <Link className={Style.mobile_menu_items_link} href={el.link}>{el.menu}</Link>
+              <div key={i + 1} className={`${Style.NavBar_box_right_menu_items} ${active === i + 1 ? Style.active_btn : ""}`} 
+              onClick={() => handleMenuItemClick(i + 1)}>
+                {el.menu === t('navbar.settings') ? (
+                  <div className={Style.dropdown}>
+                    <button className={Style.dropbtn} onClick={handleSettingsClick}>
+                      {t('navbar.settings')} <FaAngleDown   />
+                    </button>
+                    {showDropdown && (
+                      <ul className={`${Style.dropdownMenu} ${showDropdown ? Style.show : ""}`}>
+                        <li className={Style.menuItem}>
+                          <a className={Style.link} onClick={handleLanguageClick}>{t('navbar.language')}</a>
+                        </li>
+                        <li className={Style.menuItem}>
+                          <a className={Style.link} onClick={handleThemeClick}>{t('navbar.theme')}</a>
+                        </li>
+                      </ul>
+                    )}
+                  </div>
+                ) : (
+                  <Link className={Style.NavBar_box_right_menu_items_link} href={el.link}>{el.menu}</Link>
+                )}
               </div>
             ))}
-
-            <p className={Style.mobile_menu_btn}>
-              <Image 
-                src={images.close} 
-                alt="close" 
-                width={50} 
-                height={50} 
-                onClick={() => setOpen(false)}
+            {showModal && (
+              <LanguageSelector
+                closeModal={() => {
+                  setShowModal(false);
+                }}
               />
-            </p>   
+            )}
+            {themeModal && (
+              <ThemeSelector
+                closeModal={() => {
+                  setThemeModal(false);
+                }}
+                onThemeChange={handleThemeChange}
+              />
+            )}
           </div>
-         )}
-
-          {/*  CONNECT WALLET */}
+          {/* MOBILE */}
+          {open && (
+            <div className={Style.mobile_menu}>
+              {menuItems.map((el, i) => (
+              <div key={i + 1} className={`${Style.NavBar_box_right_menu_items} ${active === i + 1 ? Style.active_btn : ""}`}
+              onClick={() => handleMenuItemClick(i + 1)}>
+                {el.menu === t('navbar.settings') ? (
+                  <div className={Style.dropdown}>
+                    <button className={Style.dropbtn} onClick={handleSettingsClick}>
+                      {t('navbar.settings')} <FaAngleDown   />
+                    </button>
+                    {showDropdown && (
+                      <ul className={`${Style.dropdownMenu} ${showDropdown ? Style.show : ""}`}>
+                        <li className={Style.menuItem}>
+                          <a className={Style.link} onClick={handleLanguageClick}>{t('navbar.language')}</a>
+                        </li>
+                        <li className={Style.menuItem}>
+                          <a className={Style.link} onClick={handleThemeClick}>{t('navbar.theme')}</a>
+                        </li>
+                      </ul>
+                    )}
+                  </div>
+                ) : (
+                  <Link className={Style.NavBar_box_right_menu_items_link} href={el.link}>{el.menu}</Link>
+                )}
+              </div>
+            ))}
+             {showModal && (
+              <LanguageSelector
+                closeModal={() => {
+                  setShowModal(false);
+                }}
+              />
+            )}
+            {themeModal && (
+              <ThemeSelector
+                closeModal={() => {
+                  setThemeModal(false);
+                }}
+                onThemeChange={handleThemeChange}
+              />
+            )}
+              <p className={Style.mobile_menu_btn}>
+                <Image
+                  src={images.close}
+                  alt="close"
+                  width={50}
+                  height={50}
+                  onClick={() => setOpen(false)}
+                />
+              </p>
+            </div>
+          )}
+          {/* CONNECT WALLET */}
           <div className={Style.NavBar_box_right_connect}>
-            {account == "" ? (
+            {account === "" ? (
               <button onClick={() => connectWallet()}>
-                {""}
-                <span>Connect Wallet</span>
+                <span>{t('navbar.connectWallet')}</span>
               </button>
             ) : (
               <button onClick={() => setOpenModel(true)}>
-                {""}
                 <Image src={userName ? images.accountName : images.create2} alt="Account Image" width={20} height={20}/>
-                {""}
-                <small>{userName || "Create Account"}</small>
+                <small>{userName || t('navbar.createAccount')}</small>
               </button>
             )}
           </div>
-
           <div className={Style.NavBar_box_right_open} onClick={() => setOpen(true)}>
-              <Image src={images.open} alt="open" width={30} height={30}/>
+            <Image src={images.open} alt="open" width={30} height={30}/>
           </div>
-
         </div>
       </div>
-
       {/* MODEL COMPONENT */}
       {openModel && (
         <div className={Style.modelBox}>
-          <Model 
+          <Model
             openBox={setOpenModel}
-            title= "WELCOME TO"
-            head= "CHAT BUDDY"
-            info= 'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Aut dolore laboriosam veritatis, tenetur maiores reiciendis consequuntur nam aliquam libero atque iure laborum ducimus. Laudantium labore iste autem molestiae temporibus ut?'
-            smallInfo= "Kindley select your name..."
-            image= {images.hero}
-            functionName = {createAccount}
-            address = {account}
+            title={t('model.welcomeTo')}
+            head='CHAT BUDDY'
+            info={t('model.info')}
+            smallInfo={t('model.kindlySelect')}
+            image={images.hero}
+            functionName={createAccount}
+            address={account}
           />
         </div>
       )}
-      {error == "" ? "" : <Error error={error} />}
+      {/* ERROR COMPONENT */}
+      {error !== "" && <Error error={error} />}
     </div>
   )
 };
 
 export default NavBar;
+

@@ -1,54 +1,60 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react';
 import Style from './Accordion.module.css';
+import { useTranslation } from 'react-i18next';
+import { FaPlus, FaMinus } from 'react-icons/fa';
 
 const data = [
     {
-        question: 'Can I use the chat application without installing any software?',
-        answer:   'Yes, users can access the chat application through a web browser without requiring additional software or browser extensions. They can simply visit the chat application\'s website and start using it.',
+        question: 'faq.question1',
+        answer:   'faq.answer1',
     },
     {
-        question: 'What are the system requirements for using the chat application?',
-        answer:   'The chat application can be accessed through standard web browsers. Users need to ensure their browsers are compatible and up-to-date. No specific software installations or dependencies are required.',
+        question: 'faq.question2',
+        answer:   'faq.answer2',
     },
     {
-        question: 'What functionalities does the chat application offer?',
-        answer:   'The core functionalities are sending messages, reading messages, creating user accounts, and adding friends within the context of the decentralized chat application.',
+        question: 'faq.question3',
+        answer:   'faq.answer3',
     },
     {
-        question: 'Do I need to create an account?',
-        answer:   'Yes, to utilize the chat application, users need to create an account. This involves setting up a unique identity on the Ethereum blockchain, providing secure access to the chat functionality.',
+        question: 'faq.question4',
+        answer:   'faq.answer4',
     },
     {
-        question: 'How do I add friends in the chat application?',
-        answer:   'Adding friends in the chat application involves sending friend requests. Once the requests are accepted, users can establish connections with their friends and initiate private conversations.',
-    },
-]
+        question: 'faq.question5',
+        answer:   'faq.answer5',
+    }
+];
 
-export default function index() {
-    const [ selected, setSelected ] = useState(0);
+export default function FAQ() {
+    const { t, i18n } = useTranslation();
+    const [selected, setSelected] = useState(null);
 
     const toggle = (i) => {
-        if(selected === i) {
-            return setSelected(null);
-        }
+        setSelected(selected === i ? null : i);
+    };
 
-        setSelected(i);
-    }
+    useEffect(() => {
+        const storedLanguage = localStorage.getItem('selectedLanguage');
+        if (storedLanguage) {
+          i18n.changeLanguage(storedLanguage);
+        }
+      }, []);
 
     return (
         <div className={Style.accordion}>
             {data.map((item, i) => (
-                <div className={Style.accordion_item} key = {i}>
+                <div className={Style.accordion_item} key={i}>
                     <div className={Style.accordion_item_title} onClick={() => toggle(i)}>
-                        <h4>{ item.question }</h4>
-                        <span>{ selected === i ? '-' : '+' }</span>
+                        <h4>{t(item.question)}</h4>
+                        <span>{selected === i ? <FaMinus /> : <FaPlus />}</span>
                     </div>
-                    <div className={ selected === i ? Style.accordion_item_content_show : Style.accordion_item_content }>
-                        { item.answer }
+                    <div className={selected === i ? Style.accordion_item_content_show : Style.accordion_item_content}>
+                        {t(item.answer)}
                     </div>
                 </div>
             ))}
         </div>
-    )
+    );
 }
 

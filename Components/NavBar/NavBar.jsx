@@ -76,7 +76,7 @@ const NavBar = () => {
     <div className={Style.NavBar}>
       <div className={Style.NavBar_box}>
         <div className={Style.NavBar_box_left}>
-          <Image src={images.logo} alt="logo" width={50} height={50}/>
+          <Image src={images.logo} alt="logo" width={75} height={60}/>
         </div>
         <div className={Style.NavBar_box_right}>
           {/* DESKTOP */}

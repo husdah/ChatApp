@@ -1,5 +1,22 @@
 @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap");
 
+
+:root{
+    --light: white;
+}
+
+[data-theme = "dark"]{
+    --dark: #0d0f13;
+    --primary: #191d1d;
+    --danger: #00e0c7;
+}
+
+[data-theme = "light"]{
+    --dark: #9d9e9e;
+    --primary: #9d9e9e;
+    --danger: #00e0c7;
+}
+
 html,
 body{
     padding: 0;
@@ -20,10 +37,5 @@ a{
 
 *{
     box-sizing: border-box;
-}
-
-:root{
-    --dark: #0d0f13;
-    --primary: #191d1d;
-    --danger: #00e0c7;
+    transition: all .3s ease-in-out;
 }

@@ -8,6 +8,9 @@ import Friend from "./Friend/Friend";
 import Accordion from "./Accordion"
 import AudioRecording from "./AudioRecording/AudioRecording";
 import AudioMsg from "./AudioRecording/AudioMsg";
+import GroupModel from "./GroupModel/GroupModel";
+import Group from "./Group/Group";
+import GroupFilter from "./GroupFilter/GroupFilter";
 import FriendCard from "./FriendCard/FriendCard";
 
-export { NavBar, Filter, Error, Loader, Model, UserCard, Friend, Accordion, AudioRecording, AudioMsg,FriendCard };
+export { NavBar, Filter, Error, Loader, Model, UserCard, Friend, Accordion, AudioRecording, AudioMsg, FriendCard, GroupModel, Group, GroupFilter };

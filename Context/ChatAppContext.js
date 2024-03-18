@@ -17,6 +17,10 @@ export const ChatAppProvider = ({children})=>{
     const [error, setError] = useState("");
     const [searchList, setSearchList] = useState([]);
     const [audioData, setAudioData] = useState('');
+    const [groupList, setGroupList] = useState([]);
+    const [addedMembers, setAddedMembers] = useState([]);
+    const [searchGrpList, setSearchGrpList] = useState([]);
+    const [groupMsg, setGroupMsg] = useState([]);
 
     //CHAT USER DATA
     const [currentUserName, setCurrentUserName] = useState('');
@@ -41,6 +45,9 @@ export const ChatAppProvider = ({children})=>{
             //GET ALL APP USER LIST
             const userList = await contract.getAllAppUser();
             setUserLists(userList);
+            //GET GROUPS FOR USER
+            const groups = await contract.getGroupsForUser(connectAccount);
+            setGroupList(groups);
         } catch (error) {
             //setError("Please Install And Connect Your Wallet");
             console.log(error)
@@ -221,6 +228,100 @@ export const ChatAppProvider = ({children})=>{
         setAudioData(base64);
     }
 
+    const createGroup = async({name, members}) =>{
+        try {
+            const contract = await connectingWithContract();
+            const createGroup = await contract.createGroup(name, members);
+            setLoading(true);
+            await createGroup.wait();
+            setLoading(false);
+            router.push('/group');
+            getGroupsForUser();
+        } catch (error) {
+            //setError("Something went wrong while creating group, try again.")
+            setError(error.message);
+        }
+    }
+
+    const getGroupsForUser = async()=>{
+        try {
+            const contract = await connectingWithContract();
+            const groups = await contract.getGroupsForUser(account);
+            setGroupList(groups);
+            //return groups;
+            console.log("grps",groups);
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    const setNewGroupMembers= async(members) =>{
+        setAddedMembers(members);
+    }
+
+    // Search GROUP List 
+    const searchGroupList = async (search) => {
+        try {
+        const contract = await connectingWithContract();
+        const connectAccount = await connectWallet();
+        const myGroups = await contract.getGroupsForUser(connectAccount);
+    
+        const filteredGroups = myGroups.filter(group => {
+            return group.name.toLowerCase().includes(search.toLowerCase());
+        });
+    
+        setSearchGrpList(filteredGroups);
+        } catch (error) {
+        setError("Please reload and try again.");
+        }
+    }
+
+    const sendGrpMessage = async ({ msg, address, file, audioData, msgType }) => {
+        try {
+        const contract = await connectingWithContract();
+        let fileHash = '';
+        let message = '';
+        let type = msgType;
+        let audio = '';
+
+        if(msg){
+            message = msg;
+        }
+
+        if (file) {
+           fileHash = await pinFileToIPFS(file);
+        }
+
+        if (audioData) {
+            audio = await pinBase64ToIPFS(audioData);
+        }
+
+        console.log("msg: ",msg,"grpAddress: ",address,"file: ",fileHash, "audioData: ", audio, "msgType: ", type)
+        const addMessage = await contract.sendGrpMessage(address, message, fileHash, audio, type);
+        setLoading(true);
+        await addMessage.wait();
+        setLoading(false);
+        readGroupMessages(address);
+        } catch (error) {
+            /* setError("Please reload and try again."); */
+            setError(error.message);
+        }
+    };
+
+    //READ MESSAGE
+    const readGroupMessages = async(groupHash)=>{
+        try {
+            console.log("groupHash",groupHash);
+            const contract = await connectingWithContract();
+            const read = await contract.readGroupMessages(groupHash);
+            console.log("grpMessage",read);
+            setGroupMsg(read);
+        } catch (error) {
+            //setError("Currently You Have no Message");
+            console.log(error.message);
+        }
+    }
+
     return(
         <ChatAppContext.Provider value={
             {
@@ -244,7 +345,17 @@ export const ChatAppProvider = ({children})=>{
                 searchList,
                 clearChat,
                 audioData,
-                setAudioBase64
+                setAudioBase64,
+                createGroup,
+                getGroupsForUser,
+                groupList,
+                setNewGroupMembers,
+                addedMembers,
+                searchGroupList,
+                searchGrpList,
+                sendGrpMessage,
+                readGroupMessages,
+                groupMsg
             }}>
             {children}
         </ChatAppContext.Provider>

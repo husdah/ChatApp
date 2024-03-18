@@ -1,4 +1,7 @@
 import "../styles/globals.css";
+import '../styles/multiselect.min.css'
+
+//INTERNAL IMPORT
 import { ChatAppProvider } from "../Context/ChatAppContext";
 import { NavBar } from '../Components/index';
 import { I18nextProvider } from 'react-i18next';

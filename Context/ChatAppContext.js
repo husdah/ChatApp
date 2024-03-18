@@ -355,7 +355,8 @@ export const ChatAppProvider = ({children})=>{
                 searchGrpList,
                 sendGrpMessage,
                 readGroupMessages,
-                groupMsg
+                groupMsg,
+                setError
             }}>
             {children}
         </ChatAppContext.Provider>

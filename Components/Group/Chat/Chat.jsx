@@ -6,6 +6,7 @@ import { FaImage, FaFilePdf, FaFile, FaFileVideo } from "react-icons/fa"
 import { IoMdAttach } from "react-icons/io"
 import data from '@emoji-mart/data'
 import Picker from '@emoji-mart/react'
+import { RiGroup2Fill } from 'react-icons/ri';
 
 //INTERNAL IMPORT
 import Style from './Chat.module.css';
@@ -147,7 +148,7 @@ const Chat = ({
     <div className={chatData.name && chatData.address ? Style.Chat : Style.ChatHidden}>
       {chatData.name && chatData.address ? (
         <div className={Style.Chat_user_info}>
-          <Image src={images.accountName} alt="image" width={70} height={70} />
+          <RiGroup2Fill className={Style.Card_box_left_img} size={70} />
           <div className={Style.Chat_user_info_box}>
             <h4>{chatData.name}</h4>
             <small className={Style.show}>{chatData.address}</small>

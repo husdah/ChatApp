@@ -9,7 +9,7 @@ const addGroup = () => {
             title= "Create Group"
             info= 'you need to choose group name and select initial members'
             smallInfo= "Kindley set a group name..."
-            image= {images.buddy}
+            image= {images.accountBg}
         />
     </div>
   )

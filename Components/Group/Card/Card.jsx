@@ -1,11 +1,10 @@
 import React, { useContext } from "react";
-import Image from 'next/image';
 import Link from 'next/link';
 
 //INTERNAL IMPORT
 import Style from './Card.module.css';
-import images from '../../../assets';
 import { ChatAppContext } from '../../../Context/ChatAppContext';
+import { RiGroup2Fill } from 'react-icons/ri';
 
 const Card = ({readGroupMessages, el, i}) => {
 
@@ -17,7 +16,7 @@ const Card = ({readGroupMessages, el, i}) => {
       <div className={Style.Card} onClick={() => readGroupMessages(el.groupHash)}>
         <div className={Style.Card_box}>
           <div className={Style.Card_box_left}>
-            <Image src={images.accountName} alt="username" width={50} height={50} className={Style.Card_box_left_img} />
+            <RiGroup2Fill className={Style.Card_box_left_img} size={50} color="#00e0c7"/>
           </div>
           <div className={Style.Card_box_right}>
             <div className={Style.Card_box_right_middle}>

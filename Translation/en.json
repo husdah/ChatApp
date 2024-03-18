@@ -1,0 +1,74 @@
+{
+  "navbar": {
+    "allUsers": "All Users",
+    "chat": "Chat",
+    "contact": "Contact",
+    "settings": "Settings",
+    "faqs": "FAQs",
+    "termsOfUse": "Terms of Use",
+    "language": "Language",
+    "theme": "Theme"
+  },
+  "languageSelector": {
+    "selectLanguage": "Select Language",
+    "english": "English",
+    "arabic": "Arabic"
+  },
+  "themeSelector": {
+    "selectTheme": "Select a Theme",
+    "dark": "Dark Mode",
+    "light": "Light Mode",
+    "selectedTheme": "Selected Theme"
+  },
+  "model": {
+    "welcomeTo": "WELCOME TO",
+    "info": "Our chat app fosters seamless real-time communication through text, multimedia sharing, and optional voice notes. It's your go-to tool for effortless connection and collaboration, whether for personal or professional use.",
+    "kindlySelect": "Kindly select your name..."
+  },
+  "error": {
+    "unexpectedError": "An unexpected error occurred."
+  },
+  "connectWallet": {
+    "connectWallet": "Connect Wallet",
+    "createAccount": "Create Account"
+  },
+  "terms": {
+    "heading": "Terms of Use",
+    "accounts": {
+      "title": "Accounts",
+      "description": "When you create an account with us, you must provide us information that is accurate, complete, and current at all times. Failure to do so constitutes a breach of the Terms, which may result in immediate termination of your account on our Service."
+    },
+    "links": {
+      "title": "Links To Other Web Sites",
+      "description": "Our Service may contain links to third-party web sites or services that are not owned or controlled by [Your Company]. [Your Company] has no control over, and assumes no responsibility for, the content, privacy policies, or practices of any third-party web sites or services. You further acknowledge and agree that [Your Company] shall not be responsible or liable, directly or indirectly, for any damage or loss caused or alleged to be caused by or in connection with the use of or reliance on any such content, goods, or services available on or through any such web sites or services."
+    },
+    "changes": {
+      "title": "Changes",
+      "description": "We reserve the right, at our sole discretion, to modify or replace these Terms at any time. If a revision is material, we will try to provide at least 30 days' notice prior to any new terms taking effect. What constitutes a material change will be determined at our sole discretion."
+    },
+    "contact": {
+      "title": "Contact Us",
+      "description": "If you have any questions about these Terms, please contact us."
+    },
+    "security": {
+      "title": "Data Security",
+      "description": "We take data security seriously and implement measures to protect your information from unauthorized access or disclosure."
+    },
+    "disclaimer": {
+      "title": "Disclaimer",
+      "description": "The information provided on our platform is for general informational purposes only. We do not guarantee the accuracy or completeness of this information."
+    }
+  },
+  "faq": {
+    "question1": "Can I use the chat application without installing any software?",
+    "answer1": "Yes, users can access the chat application through a web browser without requiring additional software or browser extensions. They can simply visit the chat application's website and start using it.",
+    "question2": "What are the system requirements for using the chat application?",
+    "answer2": "The chat application can be accessed through standard web browsers. Users need to ensure their browsers are compatible and up-to-date. No specific software installations or dependencies are required.",
+    "question3": "What functionalities does the chat application offer?",
+    "answer3": "The core functionalities are sending messages, reading messages, creating user accounts, and adding friends within the context of the decentralized chat application.",
+    "question4": "Do I need to create an account?",
+    "answer4": "Yes, to utilize the chat application, users need to create an account. This involves setting up a unique identity on the Ethereum blockchain, providing secure access to the chat functionality.",
+    "question5": "How do I add friends in the chat application?",
+    "answer5": "Adding friends in the chat application involves sending friend requests. Once the requests are accepted, users can establish connections with their friends and initiate private conversations."
+  }
+}

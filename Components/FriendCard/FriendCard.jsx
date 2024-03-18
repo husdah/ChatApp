@@ -2,10 +2,11 @@ import React from "react";
 import Image from 'next/image'
 
 //INTERNAL IMPORT
-import Style from './UserCard.module.css';
+import Style from './friendCard.module.css'
 import images from '../../assets';
+import Link from 'next/link'
 
-const UserCard = ({el, i, addFriends}) => {
+const FriendCard = ({el, i, addFriends}) => {
   return (
     <div className={Style.UserCard}>
       <div className={Style.UserCard_box}>
@@ -18,14 +19,15 @@ const UserCard = ({el, i, addFriends}) => {
         />
 
         <div className={Style.UserCard_box_info}>
-          <h3>{el.name}</h3>
-          <p>{el.accountAddress.slice(0,25)}..</p>
-          <button onClick={()=> addFriends({name: el.name, accountAddress: el.accountAddress})}>Add Friend</button>
+          <h3>{el[1]}</h3>
+          <p>{el[0].slice(0,25)}..</p>
+          <button> <Link href={{pathname: '/', query: {name: `${el.name}`, address: `${el.pubkey}`}}}>Let's Chat</Link></button>
         </div>
       </div>
+
       <small className={Style.number}>{i+1}</small>
     </div>
   )
 };
 
-export default UserCard;
+export default FriendCard;

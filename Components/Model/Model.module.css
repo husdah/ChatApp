@@ -1,31 +1,50 @@
-.Model{
-    width: 85%;
+.Model {
+    width: 100%;
     margin: 1rem auto;
 }
 
-.Model_box{
+.Model_box {
+    margin-top: 55px;
     display: grid;
-    grid-template-columns: 1.4fr 1fr;
-    align-items: center;
+    grid-template-columns: 1.5fr 1.5fr;
 }
 
-.Model_box_right h1{
-    font-size: 3rem;
+.Model_box_left {
+    display: flex;
+}
+
+.Model_box_left img {
+    height: 565px !important;
+    width: 650px !important;
+}
+
+.Model_box_right {
+    width: 85%;
+    height: 100%;
+    padding: 0 20px;
+}
+
+.Model_box_right h1 {
+    font-size: 40px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    /*text-shadow: 2px 0 white;*/
     color: var(--danger);
-    line-height: .9;
+    text-align: left;
 }
 
-.Model_box_right h1 span{
+.Model_box_right h1 span {
     display: block;
-    font-size: 5rem;
+    font-size: 70px;
+    text-align: left;
 }
 
-.Model_box_right small{
+.Model_box_right small {
     font-size: 1.2rem;
     color: var(--danger);
 }
 
-.Model_box_right_name_info{
+.Model_box_right_name_info {
     display: flex;
     align-items: center;
     margin-block: 1rem;
@@ -36,7 +55,7 @@
     cursor: pointer;
 }
 
-.Model_box_right_name_info input{
+.Model_box_right_name_info input {
     width: 100%;
     background-color: transparent;
     outline: none;
@@ -44,13 +63,13 @@
     color: var(--danger);
 }
 
-.Model_box_right_name_btn{
+.Model_box_right_name_btn {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 1rem;
 }
 
-.Model_box_right_name_btn button{
+.Model_box_right_name_btn button {
     outline: none;
     border: none;
     color: var(--danger);
@@ -67,27 +86,94 @@
     cursor: pointer;
 }
 
-@media only screen and (max-width: 35em) {
-    .Model{
+.btn_submit img,
+.btn_cancel img {
+    height: 30px !important;
+    width: 30px !important;
+}
+
+/* Responsive at width 1389px*/
+@media only screen and (max-width: 1389px) {
+    .Model_box_left img {
+        height: 590px !important;
+    }
+}
+
+/* Responsive at width 1106px*/
+@media only screen and (max-width: 1106px) {
+    .Model_box_right {
+        width: 100%; 
+    }
+}
+
+/* Responsive at width 878px*/
+@media only screen and (max-width: 878px) {
+    .Model_box_left img {
+        height: 600px !important;
+        width: 650px !important;
+    }
+}
+
+/* Responsive at width 855px*/
+@media only screen and (max-width: 855px) {
+    .Model_box_right h1 {
+        font-size: 30px;
+    }
+
+    .Model_box_right h1 span {
+        font-size: 50px;
+    }
+
+    .Model_box_left img {
+        height: 466px !important;
+        width: 650px !important;
+    }
+}
+
+/* Responsive at width 768px*/
+@media only screen and (max-width: 768px) {
+    .Model_box {
+        grid-template-columns: 40% 60%;
+    }
+
+    .Model_box_right {
         width: 95%;
     }
 
-    .Model_box{
-        grid-template-columns: 1fr;
+    .Model_box_left img {
+        height: 150px !important;
     }
 
-    .Model_box_right h1{
-        font-size: 1rem;
-        line-height: 1.2;
+    .btn_submit img,
+    .btn_cancel img {
+        height: 20px !important;
+        width: 20px !important;
+    }
+}
+
+/* Responsive at width 650px*/
+@media only screen and (max-width: 650px) {
+    .Model_box {
+        grid-template-columns: 100%;
     }
 
-    .Model_box_right h1 span{
-        font-size: 2.5rem;
+    .Model_box_left {
+        display: none !important;
     }
 
-    .Model_box_right_name_btn{
-        display: grid;
-        grid-template-columns: 1fr;
-        z-index: 11111;
+    .Model_box_right {
+        width: 100%;
+    }
+}
+
+/* Responsive at width 375px*/
+@media only screen and (max-width: 375px) {
+    .btn_submit img,
+    .btn_cancel img {
+        display: none !important;
+    }
+
+    .Model_box_right h1 span {
+        font-size: 30px;
     }
 }

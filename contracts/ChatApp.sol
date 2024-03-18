@@ -113,6 +113,7 @@ contract ChatApp{
         return userList[msg.sender].friendList;
     }
 
+    
     //get chat code
     function _getChatCode(address pubkey1,address pubkey2) internal pure returns(bytes32){
         if(pubkey1 < pubkey2){

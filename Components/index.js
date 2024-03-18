@@ -11,5 +11,6 @@ import AudioMsg from "./AudioRecording/AudioMsg";
 import GroupModel from "./GroupModel/GroupModel";
 import Group from "./Group/Group";
 import GroupFilter from "./GroupFilter/GroupFilter";
+import FriendCard from "./FriendCard/FriendCard";
 
-export { NavBar, Filter, Error, Loader, Model, UserCard, Friend, Accordion, AudioRecording, AudioMsg, GroupModel, Group, GroupFilter };
+export { NavBar, Filter, Error, Loader, Model, UserCard, Friend, Accordion, AudioRecording, AudioMsg, FriendCard, GroupModel, Group, GroupFilter };

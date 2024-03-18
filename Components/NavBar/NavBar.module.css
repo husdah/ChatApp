@@ -1,5 +1,5 @@
 .NavBar{
-    width: 80%;
+    width: 90%;
     margin: 3rem auto;
     position: relative;
 }
@@ -68,8 +68,66 @@
     inset: 0 0 0 0;
     background-color: var(--primary);
     z-index: 77777777;
-}
+    overflow-y: scroll;
+}  
 
+
+.dropdown {
+    position: relative;
+    border: none;
+  }
+  
+  .dropbtn {
+    background: none;
+    color: white;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .dropdownMenu {
+    width: 100px;
+    padding: 0;
+    list-style: none;
+    position: absolute;
+    top: 10px;
+    left: -13px;
+    border-radius: 5px;
+    background: var(--danger);
+    color: white;
+    opacity: 0; 
+    transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+    transform-origin: top; 
+    transform: perspective(1000px) rotateX(-90deg);
+  }
+  
+  .dropdown:hover .dropdownMenu {
+    opacity: 1; 
+    transform: perspective(1000px) rotateX(0deg);
+  }
+  
+  
+  .dropdownMenu .menuItem {
+    text-align: center;
+    padding: 7px 5px;
+    font-size: 16px;
+    border-bottom: 1px solid #0000008a;
+    transition: all .4s ease-in-out;
+  }
+  
+  .dropdownMenu .menuItem:hover {
+    background: rgb(1, 165, 165);
+  }
+  
+  .dropdownMenu .menuItem:last-child {
+    border-bottom: none;
+  }
+  
+  .dropdownMenu .menuItem a {
+    text-decoration: none;
+    cursor: pointer;
+  }
+  
 @media only screen and (max-width: 35em) {
     .NavBar{
         width: 90%;
@@ -119,9 +177,8 @@
     .mobile_menu_btn{
         padding-top: 2rem;
     }
-
-    .modelBox{
-        position: absolute;
-        inset: 0 0 -70% 0%;
+    
+    .dropdownMenu{
+        left: 130px;
     }
 }

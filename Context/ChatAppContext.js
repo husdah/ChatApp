@@ -85,7 +85,7 @@ export const ChatAppProvider = ({children})=>{
     //CREATE ACCOUNT
     const createAccount = async({name, accountAddress})=>{
         try {
-           /*  if(name || accountAddress) return setError("Name And AccountAddress, cannot be empty"); */
+            if (!name) return setError("Name cannot be empty");
            
             const contract = await connectingWithContract();
             const getCreatedUser = await contract.createAccount(name);
@@ -98,6 +98,7 @@ export const ChatAppProvider = ({children})=>{
             setError(error.message);
         }
     }
+
 
     //ADD YOUR FRIENDS
     const addFriends = async({name, accountAddress}) =>{

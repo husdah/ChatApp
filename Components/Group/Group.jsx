@@ -7,7 +7,7 @@ import Chat from './Chat/Chat';
 import { ChatAppContext } from '../../Context/ChatAppContext';
 
 const Group = () => {
-  const { groupList, searchGrpList, userName, loading, sendGrpMessage, readGroupMessages, groupMsg, account} = useContext(ChatAppContext);
+  const { groupList, searchGrpList, userName, loading, sendGrpMessage, readGroupMessages, groupMsg, account, setError} = useContext(ChatAppContext);
   console.log("groupList",groupList);
 
   return (
@@ -40,6 +40,7 @@ const Group = () => {
             loading={loading}
             groupList={groupList}
             account={account}
+            setError={setError}
           />
         </div>
       </div>

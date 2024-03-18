@@ -24,7 +24,8 @@ const Chat = ({
   loading,
   currentUserName,
   currentUserAddress,
-  readUser
+  readUser,
+  setError
 }) => {
 
   const [message, setMessage] = useState('');
@@ -132,14 +133,18 @@ const Chat = ({
   console.log("friendMsg",friendMsg);
 
   const sendMessage = async () =>{
-    await functionName({ msg: message, address: router.query.address, file, audioData: audioData, msgType: msgType });
-    console.log("msgType",msgType);
-    setMessage("");
-    setFile(null);
-    setFileName("");
-    setFileType("");
-    setMsgType("text");
-    setFileLabelColor("");
+    if(!message && !file && !audioData){
+      setError("Please enter a message");
+    }else{
+      await functionName({ msg: message, address: router.query.address, file, audioData: audioData, msgType: msgType });
+      console.log("msgType",msgType);
+      setMessage("");
+      setFile(null);
+      setFileName("");
+      setFileType("");
+      setMsgType("text");
+      setFileLabelColor("");
+    }
   }
   
   return (

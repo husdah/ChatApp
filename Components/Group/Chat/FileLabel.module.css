@@ -1,0 +1,31 @@
+.filelabel {
+    width: 120px;
+    border: 2px dashed grey;
+    border-radius: 5px;
+    display: block;
+    padding: 5px;
+    transition: border 300ms ease;
+    cursor: pointer;
+    text-align: center;
+    margin: 0;
+}
+.filelabel i {
+    display: block;
+    font-size: 30px;
+    padding-bottom: 5px;
+}
+.filelabel i,
+.filelabel .title {
+  color: grey;
+  transition: 200ms color;
+}
+.filelabel:hover {
+  border: 2px solid var(--danger);
+}
+.filelabel:hover i,
+.filelabel:hover .title {
+  color: var(--danger);
+}
+.FileUpload1{
+  display: none;
+}

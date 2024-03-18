@@ -1,4 +1,5 @@
 import "../styles/globals.css";
+import '../styles/multiselect.min.css'
 
 //INTERNAL IMPORT
 import { ChatAppProvider } from "../Context/ChatAppContext";

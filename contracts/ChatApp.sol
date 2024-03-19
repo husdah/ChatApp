@@ -6,6 +6,7 @@ contract ChatApp{
     //USER STRUCT
     struct user{
         string name;
+        string profileImage; // Add profile image field
         friend[] friendList;
     }
 
@@ -26,6 +27,7 @@ contract ChatApp{
     struct AllUserStruck{
         string name;
         address accountAddress;
+        string profileImage; // Add profile image field
     }
 
     struct Group {
@@ -37,6 +39,7 @@ contract ChatApp{
     struct Member {
         string name;
         address memberAddress;
+        string profileImage; // Add profile image field
     }
 
     // Define a struct for group details
@@ -61,12 +64,14 @@ contract ChatApp{
 
     //CREATE ACCOUNT
     function createAccount(string calldata name) external {
+        string memory profileImage = 'QmWrj6pVXGY76fd5a8sHBRFq8Njwzt3BxYTC45a9MUFYnB';
         require(checkUserExists(msg.sender) == false, "User already exist");
         require(bytes(name).length > 0, "Username cannot be empty");
         userList[msg.sender].name = name;
+        userList[msg.sender].profileImage = profileImage; // Store profile image
         usernames[msg.sender] = name; // Store username in the mapping
 
-        getAllUsers.push(AllUserStruck(name, msg.sender));
+        getAllUsers.push(AllUserStruck(name, msg.sender, profileImage));
     }
 
     //GET USERNAME
@@ -74,6 +79,46 @@ contract ChatApp{
         require(checkUserExists(pubkey), "User is not registered");
         return userList[pubkey].name;
     }
+
+    //GET USERIMAGE
+    function getUserImage(address pubkey) external view returns(string memory){
+        require(checkUserExists(pubkey), "User is not registered");
+        return userList[pubkey].profileImage;
+    }
+    
+
+    // Update user's username
+    function updateUsername(string calldata newUsername) external {
+        require(bytes(newUsername).length > 0, "Username cannot be empty");
+
+        // Update the username
+        usernames[msg.sender] = newUsername;
+        userList[msg.sender].name = newUsername;
+        for (uint256 i = 0; i < getAllUsers.length; i++) {
+            if (getAllUsers[i].accountAddress == msg.sender) {
+                getAllUsers[i].name = newUsername;
+                break;
+            }
+        }
+    }
+
+
+    // Update profile image function
+    function updateProfileImage(string calldata newProfileImage) external {
+        require(checkUserExists(msg.sender), "User does not exist");
+        
+        // Update the profile image
+        userList[msg.sender].profileImage = newProfileImage;
+        
+        // Update profile image in the getAllUsers array
+        for (uint256 i = 0; i < getAllUsers.length; i++) {
+            if (getAllUsers[i].accountAddress == msg.sender) {
+                getAllUsers[i].profileImage = newProfileImage;
+                break;
+            }
+        }
+    }
+
 
     //ADD FRIENDS
     function addFriend(address friend_key, string calldata name) external{
@@ -189,7 +234,7 @@ contract ChatApp{
             Member[] memory membersArray = new Member[](memberAddresses.length);
             
             for(uint256 j = 0; j < memberAddresses.length; j++) {
-                membersArray[j] = Member(usernames[memberAddresses[j]], memberAddresses[j]);
+                membersArray[j] = Member(usernames[memberAddresses[j]], memberAddresses[j], userList[memberAddresses[j]].profileImage);
             }
             
             userGroupsArray[i] = GroupDetails(group.name, groupHashes[i], membersArray);

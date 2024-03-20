@@ -65,7 +65,7 @@ contract ChatApp{
 
     //CREATE ACCOUNT
     function createAccount(string calldata name) external {
-        string memory profileImage = 'QmWrj6pVXGY76fd5a8sHBRFq8Njwzt3BxYTC45a9MUFYnB';
+        string memory profileImage = '';  //QmWrj6pVXGY76fd5a8sHBRFq8Njwzt3BxYTC45a9MUFYnB
         require(checkUserExists(msg.sender) == false, "User already exist");
         require(bytes(name).length > 0, "Username cannot be empty");
         userList[msg.sender].name = name;

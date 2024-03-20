@@ -2,7 +2,7 @@
   "_format": "hh-sol-cache-2",
   "files": {
     "C:\\wamp64\\www\\chatapp\\contracts\\ChatApp.sol": {
-      "lastModificationDate": 1710945233742,
+      "lastModificationDate": 1710959895414,
       "contentHash": "aec232b052410b7bd786f33d79d08fd4",
       "sourceName": "contracts/ChatApp.sol",
       "solcConfig": {

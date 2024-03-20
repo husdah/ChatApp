@@ -3,12 +3,12 @@ import Style from './ProfileModal.module.css';
 import { FaTimes } from 'react-icons/fa';
 import Image from 'next/image';
 import { MdEdit } from "react-icons/md";
+import images from '../../assets';
 
 export default function ProfileModel({ closeModal, username, userImage, functionUserName, functionUserProfile }) {
 
     const [name, setName] = useState(username);
     const [file, setFile] = useState(null);
-    const [imageUrl, setImageUrl] = useState(`https://gateway.pinata.cloud/ipfs/${userImage}`);
 
     useEffect(() => {
       setName(username); 
@@ -20,8 +20,6 @@ export default function ProfileModel({ closeModal, username, userImage, function
 
     const handleFileChange = (e) => {
       const file = e.target.files[0];
-      const fileUrl = URL.createObjectURL(file);
-      setImageUrl(fileUrl); // Update the image URL state
       setFile(file); 
     };
 
@@ -43,7 +41,7 @@ export default function ProfileModel({ closeModal, username, userImage, function
                 onChange={handleFileChange}
               /> 
               <Image 
-                src={imageUrl} 
+                src={userImage ? `https://magenta-obliged-rodent-373.mypinata.cloud/ipfs/${userImage}?pinataGatewayToken=TBXq_-pyK84EaMuFE5zEUB-DcgITbYLhjgxuxpt9qgJCVYmk9tY0SgCS1_DhuDmd`: images.accountName} 
                 id='output' 
                 layout='fill'
               /> 

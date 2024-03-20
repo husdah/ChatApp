@@ -85,7 +85,7 @@ const Chat = ({
 	});
 
   const openLightboxForImage = (imageIndex) => {
-    const clickedImageSource = `https://gateway.pinata.cloud/ipfs/${friendMsg[imageIndex].fileHash}`;
+    const clickedImageSource = `https://magenta-obliged-rodent-373.mypinata.cloud/ipfs/${friendMsg[imageIndex].fileHash}?pinataGatewayToken=TBXq_-pyK84EaMuFE5zEUB-DcgITbYLhjgxuxpt9qgJCVYmk9tY0SgCS1_DhuDmd`;
   
     setLightboxController({
       toggler: !lightboxController.toggler,
@@ -153,8 +153,7 @@ const Chat = ({
     <div className={chatData.name && chatData.address ? Style.Chat : Style.ChatHidden}>
       {currentUserName && currentUserAddress ? (
         <div className={Style.Chat_user_info}>
-          <FaUserCircle size={60} style={{borderRadius: "50%"}}/>
-          {/* <Image src={images.username} alt="image" width={70} height={70} style={{borderRadius: "50%"}} /> */}
+          <Image src={currentUserImage ? `https://magenta-obliged-rodent-373.mypinata.cloud/ipfs/${currentUserImage}?pinataGatewayToken=TBXq_-pyK84EaMuFE5zEUB-DcgITbYLhjgxuxpt9qgJCVYmk9tY0SgCS1_DhuDmd` : images.accountName} alt="image" width={70} height={70} style={{borderRadius: "50%"}} />
           <div className={Style.Chat_user_info_box}>
             <h4>{currentUserName}</h4>
             <small className={Style.show}>{currentUserAddress}</small>
@@ -170,7 +169,7 @@ const Chat = ({
               <div key={i + 1}>
                   {el.sender === chatData.address ? (
                     <div className={Style.Chat_box_left_title}>
-                      <Image src={`https://gateway.pinata.cloud/ipfs/${currentUserImage}`} alt="image" width={50} height={50} style={{borderRadius: "50%"}}/>
+                      <Image src={currentUserImage ? `https://magenta-obliged-rodent-373.mypinata.cloud/ipfs/${currentUserImage}?pinataGatewayToken=TBXq_-pyK84EaMuFE5zEUB-DcgITbYLhjgxuxpt9qgJCVYmk9tY0SgCS1_DhuDmd` : images.accountName} alt="image" width={50} height={50} style={{borderRadius: "50%"}}/>
                       <span>
                         {chatData.name} {""}
                         <small className={Style.time}>Time: {converTime(el.timestamp)}</small>
@@ -178,7 +177,7 @@ const Chat = ({
                     </div>
                   ) : (
                     <div className={Style.Chat_box_left_title}>
-                      <Image src={`https://gateway.pinata.cloud/ipfs/${userImage}`} alt="image" width={50} height={50} style={{borderRadius: "50%"}}/>
+                      <Image src={userImage ? `https://magenta-obliged-rodent-373.mypinata.cloud/ipfs/${userImage}?pinataGatewayToken=TBXq_-pyK84EaMuFE5zEUB-DcgITbYLhjgxuxpt9qgJCVYmk9tY0SgCS1_DhuDmd` : images.accountName} alt="image" width={50} height={50} style={{borderRadius: "50%"}}/>
                       <span>
                         {userName} {""}
                         <small className={Style.time}>Time: {converTime(el.timestamp)}</small>
@@ -203,14 +202,14 @@ const Chat = ({
             {el.fileHash && el.msgType === "image" ? (
               <div onClick={() => openLightboxForImage(i)}>
                 <Image
-                  src={`https://gateway.pinata.cloud/ipfs/${el.fileHash}`}
+                  src={`https://magenta-obliged-rodent-373.mypinata.cloud/ipfs/${el.fileHash}?pinataGatewayToken=TBXq_-pyK84EaMuFE5zEUB-DcgITbYLhjgxuxpt9qgJCVYmk9tY0SgCS1_DhuDmd`}
                   alt="image"
                   width={100}
                   height={100}
                 />
               </div>
             ) : el.fileHash && el.msgType === "file" ? (
-              <a href={`https://gateway.pinata.cloud/ipfs/${el.fileHash}`} target="_blank" download={true}>
+              <a href={`https://magenta-obliged-rodent-373.mypinata.cloud/ipfs/${el.fileHash}?pinataGatewayToken=TBXq_-pyK84EaMuFE5zEUB-DcgITbYLhjgxuxpt9qgJCVYmk9tY0SgCS1_DhuDmd`} target="_blank" download={true}>
                 <FaFile size={100} />
               </a>
             ) : el.fileHash && el.msgType === "video" ? (

@@ -7,7 +7,7 @@ import Chat from './Chat/Chat';
 import { ChatAppContext } from '../../Context/ChatAppContext';
 
 const Friend = () => {
-  const { sendMessage, account, friendLists, readMessage, userName, userImage, loading, currentUserName, currentUserAddress, currentUserImage, readUser, friendMsg, searchList, setError } = useContext(ChatAppContext);
+  const { sendMessage, account, friendLists, userLists, readMessage, userName, userImage, loading, currentUserName, currentUserAddress, currentUserImage, readUser, friendMsg, searchList, setError } = useContext(ChatAppContext);
   console.log(friendLists);
 
   return (
@@ -21,6 +21,7 @@ const Friend = () => {
               i={i}
               readMessage={readMessage}
               readUser={readUser}
+              userLists={userLists}
             />
           ))}
           {searchList && searchList.map((el,i)=> (
@@ -30,6 +31,7 @@ const Friend = () => {
               i={i}
               readMessage={readMessage}
               readUser={readUser}
+              userLists={userLists}
             />
           ))} 
         </div>

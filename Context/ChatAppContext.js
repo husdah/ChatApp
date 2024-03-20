@@ -399,6 +399,7 @@ export const ChatAppProvider = ({children})=>{
                 groupMsg,
                 updateUsername,
                 updateUserProfileImage
+                setError
             }}>
             {children}
         </ChatAppContext.Provider>

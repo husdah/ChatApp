@@ -11,18 +11,19 @@ import MultiSelectComponent from "./MultiSelect/MultiSelectComponent";
 
 const GroupModel = ({title, info, smallInfo, image}) => {
 
-    const { createGroup, loading, friendLists, addedMembers, setNewGroupMembers } = useContext(ChatAppContext);
+    const { createGroup, loading, friendLists, addedMembers, setNewGroupMembers, setError } = useContext(ChatAppContext);
     const [name, setName] = useState("");
     const options = friendLists;
 
     const handleSubmit = () =>{
-      if(addedMembers.length > 0){
-        createGroup({name, members: addedMembers});
+      if(!name){
+        setError("Group Name cannot be empty");
+      }else if(addedMembers.length == 0){
+        setError("you should at least add one member");
       }else{
-        alert('you should at least add one member');
+        createGroup({name, members: addedMembers});
+        setNewGroupMembers([]);
       }
-
-      setNewGroupMembers([]);
     }
   
   return (

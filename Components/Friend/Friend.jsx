@@ -7,7 +7,7 @@ import Chat from './Chat/Chat';
 import { ChatAppContext } from '../../Context/ChatAppContext';
 
 const Friend = () => {
-  const { sendMessage, account, friendLists, readMessage, userName, loading, currentUserName, currentUserAddress, readUser, friendMsg, searchList } = useContext(ChatAppContext);
+  const { sendMessage, account, friendLists, readMessage, userName, loading, currentUserName, currentUserAddress, readUser, friendMsg, searchList, setError } = useContext(ChatAppContext);
   console.log(friendLists);
 
   return (
@@ -44,6 +44,7 @@ const Friend = () => {
             currentUserName={currentUserName}
             currentUserAddress={currentUserAddress}
             readUser={readUser}
+            setError={setError}
           />
         </div>
       </div>

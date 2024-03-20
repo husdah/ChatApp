@@ -18,11 +18,11 @@ const Error = ({ error }) => {
     <>
       {openBox && (
         <div className={Style.Error}>
+          <FaTimes className={Style.closeBtn}  onClick={handleClose} />
           <div className={Style.Error_box}>
-            <h1>Please Fix This Error & Reload Browser</h1>
-            {error}
+            <h1>Please Fix This Error</h1>
+            <p>{error}</p>
           </div>
-          <FaTimes onClick={handleClose} />
         </div>
       )}
     </>

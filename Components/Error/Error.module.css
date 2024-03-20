@@ -5,12 +5,37 @@
     margin: 0 auto;
     background-color: var(--primary);
     text-align: center;
-    border-radius: 1rem;
-    padding: 2rem;
-    border-radius: 50px;
+    height: 140px;
+    width: 450px;
+    border-radius: 12px;
     background: var(--danger);
     box-shadow: 5px 5px 10px var(--danger), -5px -5px 10px var(--danger);
 }
+
+.Error_box {
+    /*color: white;*/
+    color: var(--dark);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.Error_box h1 {
+    font-size: 30px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.closeBtn {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    cursor: pointer;
+    /*color: white;*/
+    color: var(--dark);
+}
+
 
 @media only screen and (max-width: 35em) {
     .Error{

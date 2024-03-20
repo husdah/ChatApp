@@ -10,6 +10,7 @@ export const ChatAppContext = React.createContext();
 export const ChatAppProvider = ({children})=>{
     const [account, setAccount] = useState("");
     const [userName, setUserName] = useState("");
+    const [userImage, setUserImage] = useState("");
     const [friendLists, setFriendLists] = useState([]);
     const [friendMsg, setFriendMsg] = useState([]);
     const [loading, setLoading] = useState(false);
@@ -39,6 +40,9 @@ export const ChatAppProvider = ({children})=>{
             //GET USER NAME
             const userName = await contract.getUsername(connectAccount);
             setUserName(userName);
+            //GET USER IMAGE
+            const userImage = await contract.getUserImage(connectAccount);
+            setUserImage(userImage);
             //GET MY FRIEND LIST
             const friendLists = await contract.getMyFriendList();
             setFriendLists(friendLists);
@@ -322,6 +326,42 @@ export const ChatAppProvider = ({children})=>{
         }
     }
 
+    // UPDATE USERNAME
+    const updateUsername = async (newUsername) => {
+        try {
+            if (!newUsername) return setError("Name cannot be empty");
+            const contract = await connectingWithContract();
+            const newName = await contract.updateUsername(newUsername);
+            setLoading(true);
+            await newName.wait();
+            setLoading(false);
+            setUserName(newUsername);
+            //window.location.reload();
+        } catch (error) {
+            setError(error.message);
+        }
+    }
+
+    // UPDATE USERNAME
+    const updateUserProfileImage = async (file) => {
+        try {
+            if (file) {
+                const fileHash = await pinFileToIPFS(file);
+             
+                //if (!newPofileImage) return setError("Name cannot be empty");
+                const contract = await connectingWithContract();
+                const newProfileImage = await contract.updateProfileImage(fileHash);
+                setLoading(true);
+                await newProfileImage.wait();
+                setLoading(false);
+                setUserImage(fileHash);
+            }
+            //window.location.reload();
+        } catch (error) {
+            setError(error.message);
+        }
+    }
+
     return(
         <ChatAppContext.Provider value={
             {
@@ -334,6 +374,7 @@ export const ChatAppProvider = ({children})=>{
                 CheckIfWalletConnected,
                 account,
                 userName,
+                userImage,
                 friendLists,
                 friendMsg,
                 loading,
@@ -356,6 +397,8 @@ export const ChatAppProvider = ({children})=>{
                 sendGrpMessage,
                 readGroupMessages,
                 groupMsg,
+                updateUsername,
+                updateUserProfileImage
                 setError
             }}>
             {children}

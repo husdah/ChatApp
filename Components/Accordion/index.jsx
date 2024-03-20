@@ -28,7 +28,7 @@ const data = [
 
 export default function FAQ() {
     const { t, i18n } = useTranslation();
-    const [selected, setSelected] = useState(null);
+    const [selected, setSelected] = useState(0);
 
     const toggle = (i) => {
         setSelected(selected === i ? null : i);

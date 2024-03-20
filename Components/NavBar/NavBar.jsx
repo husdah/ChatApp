@@ -3,7 +3,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import Style from './NavBar.module.css';
 import { ChatAppContext } from '../../Context/ChatAppContext';
-import { Model, Error } from '../index';
+import { Model, Error, ProfileModel } from '../index';
 import images from '../../assets';
 import LanguageSelector from '../Modal/LanguageSelector';
 import ThemeSelector from "../Modal/ThemeSelector";
@@ -13,7 +13,7 @@ import { FaAngleDown } from 'react-icons/fa';
 const NavBar = () => {
 
   const { t, i18n } = useTranslation();
-  const { account, userName, connectWallet, createAccount, error } = useContext(ChatAppContext);
+  const { account, userName, userImage, connectWallet, createAccount, error, updateUsername, updateUserProfileImage } = useContext(ChatAppContext);
 
   const [active, setActive] = useState(2);
   const [open, setOpen] = useState(false);
@@ -21,6 +21,7 @@ const NavBar = () => {
   const [showDropdown, setShowDropdown] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [themeModal, setThemeModal] = useState(false);
+  const [showProfileModal, setShowProfileModal] = useState(false);
 
   const menuItems = [
     { menu: t('navbar.allUsers'), link: '/alluser' },
@@ -72,6 +73,16 @@ const NavBar = () => {
     setActive(index);
   };
 
+  const handleModels = () => {
+    if(userName == "") {
+      setOpenModel(true)
+    }
+    else {
+      setShowProfileModal(true);
+    }
+  }
+
+  //console.log('userImage: ', userImage);
   return (
     <div className={Style.NavBar}>
       <div className={Style.NavBar_box}>
@@ -181,8 +192,8 @@ const NavBar = () => {
                 <span>{t('connectWallet.connectWallet')}</span>
               </button>
             ) : (
-              <button onClick={() => setOpenModel(true)}>
-                <Image src={userName ? images.accountName : images.create2} alt="Account Image" width={20} height={20}/>
+              <button onClick={handleModels}>
+                <Image src={userName ? `https://gateway.pinata.cloud/ipfs/${userImage}` : images.create2} alt="Account Image" width={20} height={20}/>
                 <small>{userName || t('connectWallet.createAccount')}</small>
               </button>
             )}
@@ -193,7 +204,7 @@ const NavBar = () => {
         </div>
       </div>
       {/* MODEL COMPONENT */}
-      {openModel && (
+      {openModel && userName === "" && (
         <div className={Style.modelBox}>
           <Model
             openBox={setOpenModel}
@@ -207,6 +218,21 @@ const NavBar = () => {
           />
         </div>
       )}
+
+      {showProfileModal && userName !== "" && (
+        <div className={Style.modelProfileBox}>
+          <ProfileModel 
+            closeModal={() => {
+                setShowProfileModal(false);
+            }}
+            username ={userName}
+            userImage = {userImage}
+            functionUserName={updateUsername}
+            functionUserProfile={updateUserProfileImage}
+          />
+        </div>
+      )}
+
       {/* ERROR COMPONENT */}
       {error !== "" && <Error error={error} />}
     </div>

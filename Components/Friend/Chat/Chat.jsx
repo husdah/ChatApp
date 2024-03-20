@@ -2,7 +2,7 @@ import React,{useEffect, useState, useContext} from "react";
 import Image from 'next/image';
 import { useRouter } from 'next/router'
 import FsLightbox from "fslightbox-react";
-import { FaImage, FaFilePdf, FaFile, FaFileVideo } from "react-icons/fa"
+import { FaImage, FaFilePdf, FaFile, FaFileVideo, FaUserCircle } from "react-icons/fa"
 import { IoMdAttach } from "react-icons/io"
 import data from '@emoji-mart/data'
 import Picker from '@emoji-mart/react'
@@ -24,8 +24,10 @@ const Chat = ({
   loading,
   currentUserName,
   currentUserAddress,
+  currentUserImage,
   readUser,
-  setError
+  setError,
+  userImage
 }) => {
 
   const [message, setMessage] = useState('');
@@ -151,7 +153,8 @@ const Chat = ({
     <div className={chatData.name && chatData.address ? Style.Chat : Style.ChatHidden}>
       {currentUserName && currentUserAddress ? (
         <div className={Style.Chat_user_info}>
-          <Image src={images.accountName} alt="image" width={70} height={70} />
+          <FaUserCircle size={60} style={{borderRadius: "50%"}}/>
+          {/* <Image src={images.username} alt="image" width={70} height={70} style={{borderRadius: "50%"}} /> */}
           <div className={Style.Chat_user_info_box}>
             <h4>{currentUserName}</h4>
             <small className={Style.show}>{currentUserAddress}</small>
@@ -167,7 +170,7 @@ const Chat = ({
               <div key={i + 1}>
                   {el.sender === chatData.address ? (
                     <div className={Style.Chat_box_left_title}>
-                      <Image src={images.accountName} alt="image" width={50} height={50} />
+                      <Image src={`https://gateway.pinata.cloud/ipfs/${currentUserImage}`} alt="image" width={50} height={50} style={{borderRadius: "50%"}}/>
                       <span>
                         {chatData.name} {""}
                         <small className={Style.time}>Time: {converTime(el.timestamp)}</small>
@@ -175,7 +178,7 @@ const Chat = ({
                     </div>
                   ) : (
                     <div className={Style.Chat_box_left_title}>
-                      <Image src={images.accountName} alt="image" width={50} height={50} />
+                      <Image src={`https://gateway.pinata.cloud/ipfs/${userImage}`} alt="image" width={50} height={50} style={{borderRadius: "50%"}}/>
                       <span>
                         {userName} {""}
                         <small className={Style.time}>Time: {converTime(el.timestamp)}</small>

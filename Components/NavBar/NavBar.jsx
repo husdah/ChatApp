@@ -193,7 +193,7 @@ const NavBar = () => {
               </button>
             ) : (
               <button onClick={handleModels}>
-                <Image src={userName ? `https://gateway.pinata.cloud/ipfs/${userImage}` : images.create2} alt="Account Image" width={20} height={20}/>
+                <Image src={userName ? `https://gateway.pinata.cloud/ipfs/${userImage}` : images.create2} alt="Account Image" width={20} height={20} style={{borderRadius: "50%"}}/>
                 <small>{userName || t('connectWallet.createAccount')}</small>
               </button>
             )}

@@ -26,6 +26,7 @@ export const ChatAppProvider = ({children})=>{
     //CHAT USER DATA
     const [currentUserName, setCurrentUserName] = useState('');
     const [currentUserAddress, setCurrentUserAddress] = useState('');
+    const [currentUserImage, setCurrentUserImage] = useState('');
 
     const router = useRouter();
 
@@ -105,12 +106,12 @@ export const ChatAppProvider = ({children})=>{
 
 
     //ADD YOUR FRIENDS
-    const addFriends = async({name, accountAddress}) =>{
+    const addFriends = async({name, accountAddress, profileImage}) =>{
         try {
             /* if(name || accountAddress) return setError("Name And AccountAddress, cannot be empty"); */
 
             const contract = await connectingWithContract();
-            const addMyFriend = await contract.addFriend(accountAddress, name);
+            const addMyFriend = await contract.addFriend(accountAddress, name, profileImage);
             setLoading(true);
             await addMyFriend.wait();
             setLoading(false);
@@ -173,9 +174,11 @@ export const ChatAppProvider = ({children})=>{
     const readUser = async(userAddress)=>{
         const contract = await connectingWithContract();
         const userName = await contract.getUsername(userAddress);
+        const userImage = await contract.getUserImage(userAddress);
         //setUserName(userName);
         setCurrentUserName(userName);
         setCurrentUserAddress(userAddress);
+        setCurrentUserImage(userImage);
     }  
 
     const pinFileToIPFS = async (file) => {
@@ -382,6 +385,7 @@ export const ChatAppProvider = ({children})=>{
                 error,
                 currentUserName,
                 currentUserAddress,
+                currentUserImage,
                 searchFriendList,
                 searchList,
                 clearChat,
@@ -398,7 +402,7 @@ export const ChatAppProvider = ({children})=>{
                 readGroupMessages,
                 groupMsg,
                 updateUsername,
-                updateUserProfileImage
+                updateUserProfileImage,
                 setError
             }}>
             {children}

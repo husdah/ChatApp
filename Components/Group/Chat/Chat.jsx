@@ -21,6 +21,7 @@ const Chat = ({
   readGroupMessages,
   groupMsg,
   userName,
+  userImage,
   loading,
   groupList,
   account,
@@ -176,7 +177,7 @@ const Chat = ({
               <div key={i + 1}>
                 {el.sender.toUpperCase() === account.toUpperCase() ? (
                   <div key={el.sender} className={Style.Chat_box_left_title}>
-                    <Image src={images.accountName} alt="image" width={50} height={50} />
+                    <Image src={`https://gateway.pinata.cloud/ipfs/${userImage}`} alt="image" width={50} height={50} style={{borderRadius: "50%"}}/>
                     <span>
                         {userName} {""}
                         <small className={Style.time}>Time: {converTime(el.timestamp)}</small>
@@ -189,7 +190,7 @@ const Chat = ({
                     if (member.memberAddress === el.sender) {
                         return (
                             <div key={member.memberAddress} className={Style.Chat_box_left_title}>
-                                <Image src={images.accountName} alt="image" width={50} height={50} />
+                                <Image src={`https://gateway.pinata.cloud/ipfs/${member.profileImage}`} alt="image" width={50} height={50} style={{borderRadius: "50%"}}/>
                                 <span>
                                     {member.name} {""}
                                     <small className={Style.time}>Time: {converTime(el.timestamp)}</small>

@@ -13,6 +13,7 @@ contract ChatApp{
     struct friend{
         address pubkey;
         string name;
+        string profileImage; // Add profile image field
     }
 
     struct message {
@@ -85,7 +86,6 @@ contract ChatApp{
         require(checkUserExists(pubkey), "User is not registered");
         return userList[pubkey].profileImage;
     }
-    
 
     // Update user's username
     function updateUsername(string calldata newUsername) external {
@@ -101,7 +101,6 @@ contract ChatApp{
             }
         }
     }
-
 
     // Update profile image function
     function updateProfileImage(string calldata newProfileImage) external {
@@ -121,15 +120,15 @@ contract ChatApp{
 
 
     //ADD FRIENDS
-    function addFriend(address friend_key, string calldata name) external{
+    function addFriend(address friend_key, string calldata name, string calldata profileImage) external{
         require(checkUserExists(msg.sender), "Create an Account first");
         require(checkUserExists(friend_key), "User is not registered!");
         require(msg.sender != friend_key, "Users cannot add themeselves as friends");
         require(checkAlreadyFriends(msg.sender, friend_key) == false, "These users are already friends");
 
 
-        _addFriend(msg.sender, friend_key, name);
-        _addFriend(friend_key, msg.sender, userList[msg.sender].name);
+        _addFriend(msg.sender, friend_key, name, profileImage);
+        _addFriend(friend_key, msg.sender, userList[msg.sender].name, userList[msg.sender].profileImage);
         usernames[friend_key] = name; // Store friend's username in the mapping
     }
 
@@ -148,8 +147,8 @@ contract ChatApp{
         return false;
     }
 
-    function _addFriend(address me, address friend_key, string memory name) internal {
-        friend memory newFriend = friend(friend_key, name);
+    function _addFriend(address me, address friend_key, string memory name, string memory profileImage) internal {
+        friend memory newFriend = friend(friend_key, name, profileImage);
         userList[me].friendList.push(newFriend);
     }
 

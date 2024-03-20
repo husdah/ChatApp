@@ -20,7 +20,7 @@ const UserCard = ({el, i, addFriends}) => {
         <div className={Style.UserCard_box_info}>
           <h3>{el.name}</h3>
           <p>{el.accountAddress.slice(0,25)}..</p>
-          <button onClick={()=> addFriends({name: el.name, accountAddress: el.accountAddress})}>Add Friend</button>
+          <button onClick={()=> addFriends({name: el.name, accountAddress: el.accountAddress, profileImage: el.profileImage})}>Add Friend</button>
         </div>
       </div>
       <small className={Style.number}>{i+1}</small>

@@ -14,7 +14,7 @@ const Card = ({readMessage, readUser, el, i}) => {
       <div className={Style.Card} onClick={() => (readMessage(el.pubkey), readUser(el.pubkey))}>
         <div className={Style.Card_box}>
           <div className={Style.Card_box_left}>
-            <Image src={images.accountName} alt="username" width={50} height={50} className={Style.Card_box_left_img} />
+            <Image src={`https://gateway.pinata.cloud/ipfs/${el.profileImage}`} alt="username" width={50} height={50} style={{borderRadius: '50%'}} className={Style.Card_box_left_img} />
           </div>
           <div className={Style.Card_box_right}>
             <div className={Style.Card_box_right_middle}>

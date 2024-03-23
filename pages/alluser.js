@@ -7,7 +7,8 @@ import { ChatAppContext } from "../Context/ChatAppContext";
 
 
 const alluser = () => {
-  const { userLists, addFriends ,friendLists,account} = useContext(ChatAppContext);
+  const { userLists, addFriends ,friendLists,currentUserAddress,account} = useContext(ChatAppContext);
+  console.log(userLists);
   
   return (
     <div>

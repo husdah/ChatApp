@@ -8,6 +8,8 @@ contract ChatApp{
         string name;
         string profileImage; // Add profile image field
         friend[] friendList;
+        mapping(uint256 => Story) stories; // Mapping to store user stories
+        uint256 storyCount; // Counter to keep track of stories
     }
 
     struct friend{
@@ -24,6 +26,12 @@ contract ChatApp{
         string audioData;
         string msgType;
     }
+
+     struct Story {
+        string content;
+        uint256 timestamp;
+    }
+
 
     struct AllUserStruck{
         string name;
@@ -157,6 +165,11 @@ contract ChatApp{
         return userList[msg.sender].friendList;
     }
 
+    //Get stories
+    function getStories() external view returns (friend[] memory){
+        return userList[msg.sender].friendList;
+    }
+
     
     //get chat code
     function _getChatCode(address pubkey1,address pubkey2) internal pure returns(bytes32){
@@ -193,6 +206,44 @@ contract ChatApp{
 
     function getAllAppUser() public view returns(AllUserStruck[] memory){
         return getAllUsers;
+    }
+
+    //ADD IMAGE STORY 
+    function addImageStory(string calldata fileHash) external {
+        require(checkUserExists(msg.sender), "Create an account first");
+        user storage currentUser = userList[msg.sender];
+        currentUser.stories[currentUser.storyCount] = Story("Haya", block.timestamp); // Placeholder for content
+        currentUser.storyCount++;
+    
+        // Save image file hash as part of the story
+        currentUser.stories[currentUser.storyCount - 1].content = fileHash;
+    }
+
+      // Function to get user's own stories
+    function getMyStories() external view returns (Story[] memory) {
+        user storage currentUser = userList[msg.sender];
+        uint256 totalStories = currentUser.storyCount;
+        Story[] memory stories = new Story[](totalStories);
+
+        for (uint256 i = 0; i < currentUser.storyCount; i++) {
+            stories[i] = currentUser.stories[i];
+        }
+
+        return stories;
+    }
+
+    // Function to get user's friend's stories
+    function getFriendStories(address friendAddress) external view returns (Story[] memory) {
+        require(checkAlreadyFriends(msg.sender, friendAddress), "User is not your friend");
+
+        user storage friendUser = userList[friendAddress];
+        Story[] memory stories = new Story[](friendUser.storyCount);
+
+        for (uint256 i = 0; i < friendUser.storyCount; i++) {
+            stories[i] = friendUser.stories[i];
+        }
+
+        return stories;
     }
 
     //GROUP

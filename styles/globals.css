@@ -9,12 +9,14 @@
     --dark: #0d0f13;
     --primary: #191d1d;
     --danger: #00e0c7;
+    --color: white;
 }
 
 [data-theme = "light"]{
-    --dark: #9d9e9e;
+    --dark: grey;
     --primary: #9d9e9e;
     --danger: #00e0c7;
+    --color: black;
 }
 
 html,

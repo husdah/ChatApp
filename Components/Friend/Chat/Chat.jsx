@@ -38,6 +38,8 @@ const Chat = ({
     address: ''
   });
 
+  console.log(friendMsg);
+
   const { audioData, setAudioBase64 } = useContext(ChatAppContext);
 
   const handleFileChange = (e) => {

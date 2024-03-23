@@ -25,7 +25,7 @@ const NavBar = () => {
   const menuItems = [
     { menu: t('navbar.allUsers'), link: '/alluser' },
     { menu: t('navbar.chat'), link: '/' },
-    { menu: t('navbar.contact'), link: '/' },
+    { menu: t('navbar.contact'), link: '/contact' },
     { menu: t('navbar.settings'), link: '/' },
     { menu: t('navbar.faqs'), link: 'faq' },
     { menu: t('navbar.termsOfUse'), link: '/terms' }

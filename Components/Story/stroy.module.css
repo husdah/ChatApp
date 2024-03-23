@@ -1,0 +1,62 @@
+.story {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 150px;
+    width: 150px;
+    margin: 0 5px;
+}
+
+.storyContainer{
+    position: relative;
+}
+
+.storyCircle {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    border: 2px solid var(--danger);
+    overflow: hidden;
+    z-index: 0;
+}
+
+.storyImage {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.usernameOverlay {
+    width: 100%;
+    text-align: center;
+    color: white;
+    padding: 5px 0;
+    font-weight: bold;
+}
+
+.round{
+    position: absolute;
+    top: 70%;
+    right: 2px;
+    z-index: 100;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    overflow: hidden;
+  }
+
+  .round .addButton{
+    width: 100%;
+    height: 100%;
+  }
+  
+  .round .FileUpload{
+    position: absolute;
+    transform: scale(2);
+    opacity: 0;
+  }
+  
+  .FileUpload::-webkit-file-upload-button{
+      cursor: pointer;
+  }

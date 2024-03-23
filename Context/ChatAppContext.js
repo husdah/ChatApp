@@ -17,6 +17,9 @@ export const ChatAppProvider = ({children})=>{
     const [error, setError] = useState("");
     const [searchList, setSearchList] = useState([]);
     const [audioData, setAudioData] = useState('');
+    const [fileStory, setFileStory] = useState('');
+    const [storyList, setStoryList] = useState([]);
+    const [friendStoryList, setFriendStoryList] = useState([]);
 
     //CHAT USER DATA
     const [currentUserName, setCurrentUserName] = useState('');
@@ -41,6 +44,24 @@ export const ChatAppProvider = ({children})=>{
             //GET ALL APP USER LIST
             const userList = await contract.getAllAppUser();
             setUserLists(userList);
+            //GET USER STORY
+            const storyList = await contract.getMyStories();
+            setStoryList(storyList);
+            //GET FRIENDS STORY
+
+            const allFriendStories = [];
+
+            // Iterate over each friend object
+            for (const friend of friendLists) {
+                //GET FRIEND'S STORY
+                const friendStoryList = await contract.getFriendStories(friend.pubkey);
+                // Add friend's stories to the array along with the friend's name
+                allFriendStories.push({ friendName: friend.name, stories: friendStoryList, friendAddress: friend.pubkey });
+            }
+    
+            // Set all friend stories
+            setFriendStoryList(allFriendStories);
+
         } catch (error) {
             //setError("Please Install And Connect Your Wallet");
             console.log(error)
@@ -158,6 +179,29 @@ export const ChatAppProvider = ({children})=>{
         }
     };
 
+    //SEND STROY
+    const sendStory = async ({ file }) => {
+        try {
+        const contract = await connectingWithContract();
+        console.log(file)
+        let fileHash = '';
+
+        if (file) {
+           fileHash = await pinFileToIPFS(file);
+        }
+
+        const addImageStory = await contract.addImageStory(fileHash);
+        setLoading(true);
+        await addImageStory.wait();
+        setLoading(false);
+        } catch (error) {
+            setError(error.message);
+        }
+    };
+
+    //Get My stories
+
+
     //READ INFO
     const readUser = async(userAddress)=>{
         const contract = await connectingWithContract();
@@ -228,6 +272,7 @@ export const ChatAppProvider = ({children})=>{
                 createAccount, 
                 addFriends, 
                 sendMessage, 
+                sendStory,
                 readUser,
                 connectWallet,
                 CheckIfWalletConnected,
@@ -238,6 +283,8 @@ export const ChatAppProvider = ({children})=>{
                 loading,
                 userLists,
                 error,
+                storyList,
+                friendStoryList,
                 currentUserName,
                 currentUserAddress,
                 searchFriendList,

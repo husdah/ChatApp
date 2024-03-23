@@ -18,7 +18,7 @@ const Model = ({openBox, title, head, info, smallInfo, image, functionName, addr
     <div className={Style.Model}>
       <div className={Style.Model_box}>
         <div className={Style.Model_box_left}>
-          <Image src={image} alt="buddy" width={700} height={700}/>
+            <Image src={image} alt="buddy" className={Style.Model_box_left_img}/>
         </div>
         <div className={Style.Model_box_right}>
           <h1>{title} <span>{head}</span></h1>
@@ -43,16 +43,16 @@ const Model = ({openBox, title, head, info, smallInfo, image, functionName, addr
                 </div>
 
                 <div className={Style.Model_box_right_name_btn}>
-                  <button onClick={() => functionName({name, accountAddress})}>
+                  <button onClick={() => functionName({name, accountAddress})} className={Style.btn_submit}>
                     {""}
-                    <Image src={images.send} alt="send" width={30} height={30} />
+                    <Image src={images.send} alt="send" />
                     {""}
                     Submit
                   </button>
 
-                  <button onClick={() => openBox(false)}>
+                  <button onClick={() => openBox(false)} className={Style.btn_cancel}>
                     {""}
-                    <Image src={images.close} alt="close" width={30} height={30} />
+                    <Image src={images.close} alt="close" />
                     {""}
                     Cancel
                   </button>

@@ -30,3 +30,9 @@ yarn-error.log*
 
 # vercel
 .vercel
+
+# Artifacts
+/artifacts
+
+# Cache
+/cache

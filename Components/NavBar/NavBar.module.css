@@ -68,7 +68,8 @@
     inset: 0 0 0 0;
     background-color: var(--primary);
     z-index: 77777777;
-}
+    overflow-y: scroll;
+}  
 
 
 .dropdown {
@@ -176,12 +177,7 @@
     .mobile_menu_btn{
         padding-top: 2rem;
     }
-
-    .modelBox{
-        position: absolute;
-        inset: 0 0 -70% 0%;
-    }
-
+    
     .dropdownMenu{
         left: 130px;
     }

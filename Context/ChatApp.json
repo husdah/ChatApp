@@ -14,6 +14,11 @@
           "internalType": "string",
           "name": "name",
           "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "profileImage",
+          "type": "string"
         }
       ],
       "name": "addFriend",
@@ -80,6 +85,24 @@
       "type": "function"
     },
     {
+      "inputs": [
+        {
+          "internalType": "string",
+          "name": "groupName",
+          "type": "string"
+        },
+        {
+          "internalType": "address[]",
+          "name": "initialMembers",
+          "type": "address[]"
+        }
+      ],
+      "name": "createGroup",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
       "inputs": [],
       "name": "getAllAppUser",
       "outputs": [
@@ -94,6 +117,11 @@
               "internalType": "address",
               "name": "accountAddress",
               "type": "address"
+            },
+            {
+              "internalType": "string",
+              "name": "profileImage",
+              "type": "string"
             }
           ],
           "internalType": "struct ChatApp.AllUserStruck[]",
@@ -118,6 +146,7 @@
           "components": [
             {
               "internalType": "string",
+
               "name": "content",
               "type": "string"
             },
@@ -128,6 +157,38 @@
             }
           ],
           "internalType": "struct ChatApp.Story[]",
+              "name": "name",
+              "type": "string"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "groupHash",
+              "type": "bytes32"
+            },
+            {
+              "components": [
+                {
+                  "internalType": "string",
+                  "name": "name",
+                  "type": "string"
+                },
+                {
+                  "internalType": "address",
+                  "name": "memberAddress",
+                  "type": "address"
+                },
+                {
+                  "internalType": "string",
+                  "name": "profileImage",
+                  "type": "string"
+                }
+              ],
+              "internalType": "struct ChatApp.Member[]",
+              "name": "members",
+              "type": "tuple[]"
+            }
+          ],
+          "internalType": "struct ChatApp.GroupDetails[]",
           "name": "",
           "type": "tuple[]"
         }
@@ -149,6 +210,11 @@
             {
               "internalType": "string",
               "name": "name",
+              "type": "string"
+            },
+            {
+              "internalType": "string",
+              "name": "profileImage",
               "type": "string"
             }
           ],
@@ -218,12 +284,82 @@
           "type": "address"
         }
       ],
+      "name": "getUserImage",
+      "outputs": [
+        {
+          "internalType": "string",
+          "name": "",
+          "type": "string"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "pubkey",
+          "type": "address"
+        }
+      ],
       "name": "getUsername",
       "outputs": [
         {
           "internalType": "string",
           "name": "",
           "type": "string"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes32",
+          "name": "groupHash",
+          "type": "bytes32"
+        }
+      ],
+      "name": "readGroupMessages",
+      "outputs": [
+        {
+          "components": [
+            {
+              "internalType": "address",
+              "name": "sender",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "timestamp",
+              "type": "uint256"
+            },
+            {
+              "internalType": "string",
+              "name": "msg",
+              "type": "string"
+            },
+            {
+              "internalType": "string",
+              "name": "fileHash",
+              "type": "string"
+            },
+            {
+              "internalType": "string",
+              "name": "audioData",
+              "type": "string"
+            },
+            {
+              "internalType": "string",
+              "name": "msgType",
+              "type": "string"
+            }
+          ],
+          "internalType": "struct ChatApp.message[]",
+          "name": "",
+          "type": "tuple[]"
         }
       ],
       "stateMutability": "view",
@@ -283,6 +419,39 @@
     {
       "inputs": [
         {
+          "internalType": "bytes32",
+          "name": "groupHash",
+          "type": "bytes32"
+        },
+        {
+          "internalType": "string",
+          "name": "_msg",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "fileHash",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "audioData",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "msgType",
+          "type": "string"
+        }
+      ],
+      "name": "sendGrpMessage",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
           "internalType": "address",
           "name": "friend_key",
           "type": "address"
@@ -311,6 +480,51 @@
       "name": "sendMessage",
       "outputs": [],
       "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "string",
+          "name": "newProfileImage",
+          "type": "string"
+        }
+      ],
+      "name": "updateProfileImage",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "string",
+          "name": "newUsername",
+          "type": "string"
+        }
+      ],
+      "name": "updateUsername",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "name": "usernames",
+      "outputs": [
+        {
+          "internalType": "string",
+          "name": "",
+          "type": "string"
+        }
+      ],
+      "stateMutability": "view",
       "type": "function"
     }
   ],

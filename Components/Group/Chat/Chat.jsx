@@ -2,10 +2,11 @@ import React,{useEffect, useState, useContext} from "react";
 import Image from 'next/image';
 import { useRouter } from 'next/router'
 import FsLightbox from "fslightbox-react";
-import { FaImage, FaFilePdf, FaFile, FaFileVideo, FaUserCircle } from "react-icons/fa"
+import { FaImage, FaFilePdf, FaFile, FaFileVideo } from "react-icons/fa"
 import { IoMdAttach } from "react-icons/io"
 import data from '@emoji-mart/data'
 import Picker from '@emoji-mart/react'
+import { RiGroup2Fill } from 'react-icons/ri';
 
 //INTERNAL IMPORT
 import Style from './Chat.module.css';
@@ -17,17 +18,14 @@ import { ChatAppContext } from '../../../Context/ChatAppContext';
 
 const Chat = ({
   functionName,
-  readMessage,
-  friendMsg,
-  account,
+  readGroupMessages,
+  groupMsg,
   userName,
+  userImage,
   loading,
-  currentUserName,
-  currentUserAddress,
-  currentUserImage,
-  readUser,
-  setError,
-  userImage
+  groupList,
+  account,
+  setError
 }) => {
 
   const [message, setMessage] = useState('');
@@ -41,9 +39,8 @@ const Chat = ({
     address: ''
   });
 
-  console.log(friendMsg);
-
   const { audioData, setAudioBase64 } = useContext(ChatAppContext);
+  const [currentGroup, setCurrentGroup] = useState({});
 
   const handleFileChange = (e) => {
     setFile(e.target.files[0]);
@@ -87,8 +84,8 @@ const Chat = ({
 	});
 
   const openLightboxForImage = (imageIndex) => {
-    const clickedImageSource = `https://magenta-obliged-rodent-373.mypinata.cloud/ipfs/${friendMsg[imageIndex].fileHash}?pinataGatewayToken=TBXq_-pyK84EaMuFE5zEUB-DcgITbYLhjgxuxpt9qgJCVYmk9tY0SgCS1_DhuDmd`;
-  
+    const clickedImageSource = `https://magenta-obliged-rodent-373.mypinata.cloud/ipfs/${groupMsg[imageIndex].fileHash}?pinataGatewayToken=TBXq_-pyK84EaMuFE5zEUB-DcgITbYLhjgxuxpt9qgJCVYmk9tY0SgCS1_DhuDmd`;
+    
     setLightboxController({
       toggler: !lightboxController.toggler,
       sources: [clickedImageSource],
@@ -109,11 +106,14 @@ const Chat = ({
 
     if (name && address) {
         setChatData({ name, address });
-        readMessage(address);
-        readUser(address);
+        readGroupMessages(address);
+        const matchingGroup = groupList.find(el => el.groupHash === address);
+        setCurrentGroup(matchingGroup || {});
+        console.log("currentGroup",matchingGroup);
+        console.log("grpMsges", groupMsg);
     }
 
-}, [router.isReady, router.query.address]);
+  }, [router.isReady, router.query.address, groupList]);
 
   useEffect(() => {
     const sendMessageWithAudio = async () => {
@@ -134,8 +134,6 @@ const Chat = ({
     sendMessageWithAudio(); // Call the async function immediately
   }, [audioData]);
 
-  console.log("friendMsg",friendMsg);
-
   const sendMessage = async () =>{
     if(!message && !file && !audioData){
       setError("Please enter a message");
@@ -153,12 +151,20 @@ const Chat = ({
   
   return (
     <div className={chatData.name && chatData.address ? Style.Chat : Style.ChatHidden}>
-      {currentUserName && currentUserAddress ? (
+      {chatData.name && chatData.address ? (
         <div className={Style.Chat_user_info}>
-          <Image src={currentUserImage ? `https://magenta-obliged-rodent-373.mypinata.cloud/ipfs/${currentUserImage}?pinataGatewayToken=TBXq_-pyK84EaMuFE5zEUB-DcgITbYLhjgxuxpt9qgJCVYmk9tY0SgCS1_DhuDmd` : images.accountName} alt="image" width={70} height={70} style={{borderRadius: "50%"}} />
+          <RiGroup2Fill className={Style.Card_box_left_img} size={70} />
           <div className={Style.Chat_user_info_box}>
-            <h4>{currentUserName}</h4>
-            <small className={Style.show}>{currentUserAddress}</small>
+            <h4>{chatData.name}</h4>
+            <small className={Style.show}>{chatData.address}</small>
+            <p>
+            {currentGroup && currentGroup.members && currentGroup.members.map((member, index) => (
+                <React.Fragment key={index}>
+                    <small>{member.name === userName ? 'You' : member.name}</small>
+                    {index !== currentGroup.members.length - 1 && <small> , </small>}
+                </React.Fragment>
+              ))}
+            </p>
           </div>
         </div>
       ): ""}
@@ -167,33 +173,41 @@ const Chat = ({
         <div className={Style.Chat_box}>
           <div className={Style.Chat_box_left}>
             
-            {friendMsg.map((el, i) => (
+            {groupMsg.map((el, i) => (
               <div key={i + 1}>
-                  {el.sender === chatData.address ? (
-                    <div className={Style.Chat_box_left_title}>
-                      <Image src={currentUserImage ? `https://magenta-obliged-rodent-373.mypinata.cloud/ipfs/${currentUserImage}?pinataGatewayToken=TBXq_-pyK84EaMuFE5zEUB-DcgITbYLhjgxuxpt9qgJCVYmk9tY0SgCS1_DhuDmd` : images.accountName} alt="image" width={50} height={50} style={{borderRadius: "50%"}}/>
-                      <span>
-                        {chatData.name} {""}
-                        <small className={Style.time}>Time: {converTime(el.timestamp)}</small>
-                      </span>
-                    </div>
-                  ) : (
-                    <div className={Style.Chat_box_left_title}>
-                      <Image src={userImage ? `https://magenta-obliged-rodent-373.mypinata.cloud/ipfs/${userImage}?pinataGatewayToken=TBXq_-pyK84EaMuFE5zEUB-DcgITbYLhjgxuxpt9qgJCVYmk9tY0SgCS1_DhuDmd` : images.accountName} alt="image" width={50} height={50} style={{borderRadius: "50%"}}/>
-                      <span>
+                {el.sender.toUpperCase() === account.toUpperCase() ? (
+                  <div key={el.sender} className={Style.Chat_box_left_title}>
+                    <Image src={userImage ? `https://magenta-obliged-rodent-373.mypinata.cloud/ipfs/${userImage}?pinataGatewayToken=TBXq_-pyK84EaMuFE5zEUB-DcgITbYLhjgxuxpt9qgJCVYmk9tY0SgCS1_DhuDmd` : images.accountName} alt="image" width={50} height={50} style={{borderRadius: "50%"}}/>
+                    <span>
                         {userName} {""}
                         <small className={Style.time}>Time: {converTime(el.timestamp)}</small>
-                      </span>
-                    </div>
-                  )}
+                    </span>
+                  </div>
+                ) :
+                currentGroup &&
+                currentGroup.members &&
+                currentGroup.members.map((member) => {
+                    if (member.memberAddress === el.sender) {
+                        return (
+                            <div key={member.memberAddress} className={Style.Chat_box_left_title}>
+                                <Image src={member.profileImage ? `https://magenta-obliged-rodent-373.mypinata.cloud/ipfs/${member.profileImage}?pinataGatewayToken=TBXq_-pyK84EaMuFE5zEUB-DcgITbYLhjgxuxpt9qgJCVYmk9tY0SgCS1_DhuDmd` : images.accountName} alt="image" width={50} height={50} style={{borderRadius: "50%"}}/>
+                                <span>
+                                    {member.name} {""}
+                                    <small className={Style.time}>Time: {converTime(el.timestamp)}</small>
+                                </span>
+                            </div>
+                        );
+                    }
+                })   
+              }
 
-                  {el.msg && (
-                    <p key={i + 1} className={el.sender === chatData.address ? Style.msgR : Style.msgS}>
-                      {el.msg}
-                      {""}
-                      {""}
-                    </p>
-                  )}
+                {el.msg && (
+                  <p key={i + 1} className={el.sender.toUpperCase() === account.toUpperCase() ? Style.msgS : Style.msgR}>
+                    {el.msg}
+                    {""}
+                    {""}
+                  </p>
+                )}
 
                 {
                   el.audioData && (
@@ -243,7 +257,7 @@ const Chat = ({
           />
         )}
 
-        {currentUserName && currentUserAddress ? (
+        {chatData.name && chatData.address ? (
           <div className={Style.Chat_box_send}>
             <div className={Style.Chat_box_send_img}>
               

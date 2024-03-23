@@ -31,6 +31,7 @@ import image9 from "./img9.gif";
 import image10 from "./img10.gif";
 import imageHolder from "./imagePlaceholder.jpg";
 import faq from "./faq.png";
+import accountBg from "./accountBg.png"
 
 export default {
   logo,
@@ -65,5 +66,6 @@ export default {
   image9,
   image10,
   imageHolder,
-  faq
+  faq,
+  accountBg
 };

@@ -1,6 +1,7 @@
 import React,{useState, useContext, useEffect} from "react";
 import Image from 'next/image';
 import { useRouter } from 'next/router'
+import Link from 'next/link';
 
 //INTERNAL IMPORT
 import Style from './Filter.module.css';
@@ -39,6 +40,13 @@ const Filter = () => {
             <Image src={images.clear} alt="clear" width={20} height={20} />
             CLEAR CHAT
           </button>
+          <Link href="/group">
+            <button>
+              <Image src={images.account} alt="group" width={20} height={20} />
+              GROUPS
+            </button>
+          </Link>
+
           {/* <button onClick={()=> setAddFriend(true)}>
             <Image src={images.user} alt="user" width={20} height={20} />
             ADD FRIEND

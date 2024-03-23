@@ -10,6 +10,7 @@ export const ChatAppContext = React.createContext();
 export const ChatAppProvider = ({children})=>{
     const [account, setAccount] = useState("");
     const [userName, setUserName] = useState("");
+    const [userImage, setUserImage] = useState("");
     const [friendLists, setFriendLists] = useState([]);
     const [friendMsg, setFriendMsg] = useState([]);
     const [loading, setLoading] = useState(false);
@@ -20,10 +21,15 @@ export const ChatAppProvider = ({children})=>{
     const [fileStory, setFileStory] = useState('');
     const [storyList, setStoryList] = useState([]);
     const [friendStoryList, setFriendStoryList] = useState([]);
+    const [groupList, setGroupList] = useState([]);
+    const [addedMembers, setAddedMembers] = useState([]);
+    const [searchGrpList, setSearchGrpList] = useState([]);
+    const [groupMsg, setGroupMsg] = useState([]);
 
     //CHAT USER DATA
     const [currentUserName, setCurrentUserName] = useState('');
     const [currentUserAddress, setCurrentUserAddress] = useState('');
+    const [currentUserImage, setCurrentUserImage] = useState('');
 
     const router = useRouter();
 
@@ -38,6 +44,9 @@ export const ChatAppProvider = ({children})=>{
             //GET USER NAME
             const userName = await contract.getUsername(connectAccount);
             setUserName(userName);
+            //GET USER IMAGE
+            const userImage = await contract.getUserImage(connectAccount);
+            setUserImage(userImage);
             //GET MY FRIEND LIST
             const friendLists = await contract.getMyFriendList();
             setFriendLists(friendLists);
@@ -48,9 +57,7 @@ export const ChatAppProvider = ({children})=>{
             const storyList = await contract.getMyStories();
             setStoryList(storyList);
             //GET FRIENDS STORY
-
             const allFriendStories = [];
-
             // Iterate over each friend object
             for (const friend of friendLists) {
                 //GET FRIEND'S STORY
@@ -58,10 +65,11 @@ export const ChatAppProvider = ({children})=>{
                 // Add friend's stories to the array along with the friend's name
                 allFriendStories.push({ friendName: friend.name, stories: friendStoryList, friendAddress: friend.pubkey });
             }
-    
             // Set all friend stories
             setFriendStoryList(allFriendStories);
-
+            //GET GROUPS FOR USER
+            const groups = await contract.getGroupsForUser(connectAccount);
+            setGroupList(groups);
         } catch (error) {
             //setError("Please Install And Connect Your Wallet");
             console.log(error)
@@ -99,7 +107,7 @@ export const ChatAppProvider = ({children})=>{
     //CREATE ACCOUNT
     const createAccount = async({name, accountAddress})=>{
         try {
-           /*  if(name || accountAddress) return setError("Name And AccountAddress, cannot be empty"); */
+            if (!name) return setError("Name cannot be empty");
            
             const contract = await connectingWithContract();
             const getCreatedUser = await contract.createAccount(name);
@@ -115,12 +123,12 @@ export const ChatAppProvider = ({children})=>{
 
 
     //ADD YOUR FRIENDS
-    const addFriends = async({name, accountAddress}) =>{
+    const addFriends = async({name, accountAddress, profileImage}) =>{
         try {
             /* if(name || accountAddress) return setError("Name And AccountAddress, cannot be empty"); */
 
             const contract = await connectingWithContract();
-            const addMyFriend = await contract.addFriend(accountAddress, name);
+            const addMyFriend = await contract.addFriend(accountAddress, name, profileImage);
             setLoading(true);
             await addMyFriend.wait();
             setLoading(false);
@@ -206,9 +214,11 @@ export const ChatAppProvider = ({children})=>{
     const readUser = async(userAddress)=>{
         const contract = await connectingWithContract();
         const userName = await contract.getUsername(userAddress);
+        const userImage = await contract.getUserImage(userAddress);
         //setUserName(userName);
         setCurrentUserName(userName);
         setCurrentUserAddress(userAddress);
+        setCurrentUserImage(userImage);
     }  
 
     const pinFileToIPFS = async (file) => {
@@ -265,6 +275,136 @@ export const ChatAppProvider = ({children})=>{
         setAudioData(base64);
     }
 
+    const createGroup = async({name, members}) =>{
+        try {
+            const contract = await connectingWithContract();
+            const createGroup = await contract.createGroup(name, members);
+            setLoading(true);
+            await createGroup.wait();
+            setLoading(false);
+            router.push('/group');
+            getGroupsForUser();
+        } catch (error) {
+            //setError("Something went wrong while creating group, try again.")
+            setError(error.message);
+        }
+    }
+
+    const getGroupsForUser = async()=>{
+        try {
+            const contract = await connectingWithContract();
+            const groups = await contract.getGroupsForUser(account);
+            setGroupList(groups);
+            //return groups;
+            console.log("grps",groups);
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    const setNewGroupMembers= async(members) =>{
+        setAddedMembers(members);
+    }
+
+    // Search GROUP List 
+    const searchGroupList = async (search) => {
+        try {
+        const contract = await connectingWithContract();
+        const connectAccount = await connectWallet();
+        const myGroups = await contract.getGroupsForUser(connectAccount);
+    
+        const filteredGroups = myGroups.filter(group => {
+            return group.name.toLowerCase().includes(search.toLowerCase());
+        });
+    
+        setSearchGrpList(filteredGroups);
+        } catch (error) {
+        setError("Please reload and try again.");
+        }
+    }
+
+    const sendGrpMessage = async ({ msg, address, file, audioData, msgType }) => {
+        try {
+        const contract = await connectingWithContract();
+        let fileHash = '';
+        let message = '';
+        let type = msgType;
+        let audio = '';
+
+        if(msg){
+            message = msg;
+        }
+
+        if (file) {
+           fileHash = await pinFileToIPFS(file);
+        }
+
+        if (audioData) {
+            audio = await pinBase64ToIPFS(audioData);
+        }
+
+        console.log("msg: ",msg,"grpAddress: ",address,"file: ",fileHash, "audioData: ", audio, "msgType: ", type)
+        const addMessage = await contract.sendGrpMessage(address, message, fileHash, audio, type);
+        setLoading(true);
+        await addMessage.wait();
+        setLoading(false);
+        readGroupMessages(address);
+        } catch (error) {
+            /* setError("Please reload and try again."); */
+            setError(error.message);
+        }
+    };
+
+    //READ MESSAGE
+    const readGroupMessages = async(groupHash)=>{
+        try {
+            console.log("groupHash",groupHash);
+            const contract = await connectingWithContract();
+            const read = await contract.readGroupMessages(groupHash);
+            console.log("grpMessage",read);
+            setGroupMsg(read);
+        } catch (error) {
+            //setError("Currently You Have no Message");
+            console.log(error.message);
+        }
+    }
+
+    // UPDATE USERNAME
+    const updateUsername = async (newUsername) => {
+        try {
+            if (!newUsername) return setError("Name cannot be empty");
+            const contract = await connectingWithContract();
+            const newName = await contract.updateUsername(newUsername);
+            setLoading(true);
+            await newName.wait();
+            setLoading(false);
+            setUserName(newUsername);
+            //window.location.reload();
+        } catch (error) {
+            setError(error.message);
+        }
+    }
+
+    // UPDATE USERNAME
+    const updateUserProfileImage = async (file) => {
+        try {
+            if (file) {
+                const fileHash = await pinFileToIPFS(file);
+             
+                //if (!newPofileImage) return setError("Name cannot be empty");
+                const contract = await connectingWithContract();
+                const newProfileImage = await contract.updateProfileImage(fileHash);
+                setLoading(true);
+                await newProfileImage.wait();
+                setLoading(false);
+                setUserImage(fileHash);
+            }
+            //window.location.reload();
+        } catch (error) {
+            setError(error.message);
+        }
+    }
+
     return(
         <ChatAppContext.Provider value={
             {
@@ -278,6 +418,7 @@ export const ChatAppProvider = ({children})=>{
                 CheckIfWalletConnected,
                 account,
                 userName,
+                userImage,
                 friendLists,
                 friendMsg,
                 loading,
@@ -287,11 +428,25 @@ export const ChatAppProvider = ({children})=>{
                 friendStoryList,
                 currentUserName,
                 currentUserAddress,
+                currentUserImage,
                 searchFriendList,
                 searchList,
                 clearChat,
                 audioData,
-                setAudioBase64
+                setAudioBase64,
+                createGroup,
+                getGroupsForUser,
+                groupList,
+                setNewGroupMembers,
+                addedMembers,
+                searchGroupList,
+                searchGrpList,
+                sendGrpMessage,
+                readGroupMessages,
+                groupMsg,
+                updateUsername,
+                updateUserProfileImage,
+                setError
             }}>
             {children}
         </ChatAppContext.Provider>

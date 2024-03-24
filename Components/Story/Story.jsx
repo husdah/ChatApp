@@ -7,13 +7,13 @@ import PopUp from './popUp/popUp';
 import { ChatAppContext } from '../../Context/ChatAppContext';
 import StoryDisplay from './storyDisplay/StoryDisplay';
 
-const Story = ({storyList, username, friendAddress, isFriend}) => {
+const Story = ({storyList, username, friendAddress, isFriend, userImage}) => {
     const [showModal, setShowModal] = useState(false);
     const [showStory, setShowStory] = useState(false);
     const [selectedImage, setSelectedImage] = useState(null);
     const [file, setFile] = useState(null);
 
-    const{ friendLists, friendStoryList} = useContext(ChatAppContext);
+    const{ friendLists, friendStoryList } = useContext(ChatAppContext);
 
     // Function to handle file input change
     const handleFileChange = (event) => {
@@ -33,7 +33,7 @@ const Story = ({storyList, username, friendAddress, isFriend}) => {
         <div className={styles.story}>
             <div className={styles.storyContainer}>
                 <div className={styles.storyCircle} onClick={() => setShowStory(true)}>
-                    <Image src={images.avatar} alt="Story" className={styles.storyImage} />
+                    <Image src={userImage ? `https://magenta-obliged-rodent-373.mypinata.cloud/ipfs/${userImage}?pinataGatewayToken=TBXq_-pyK84EaMuFE5zEUB-DcgITbYLhjgxuxpt9qgJCVYmk9tY0SgCS1_DhuDmd`: images.accountName}  alt="Story" className={styles.storyImage} width={100} height={100} />
                 </div>
                 {!isFriend &&
                 <div className={styles.round}>

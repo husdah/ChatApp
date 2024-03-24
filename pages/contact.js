@@ -8,7 +8,7 @@ import { ChatAppContext } from "../Context/ChatAppContext";
 import {FriendCard} from "../Components/index";
 
 const alluser = () => {
-  const { userLists, addFriends ,friendLists,currentUserAddress, storyList, friendStoryList} = useContext(ChatAppContext);
+  const { userLists, addFriends ,friendLists,currentUserAddress, storyList, friendStoryList, userImage} = useContext(ChatAppContext);
 
   console.log(friendStoryList);
   return (
@@ -20,16 +20,24 @@ const alluser = () => {
         storyList = {storyList} 
         username = "Your Stories"
         isFriend = {false}
+        userImage={userImage}
         />
-         {friendStoryList.map((friendStory) => (
- 
-              <Story 
-              storyList={friendStory.stories}
-              username = {friendStory.friendName}
-              friendAddress = {friendStory.friendAddress}
-              isFriend = {true}
-               />
-        ))}
+         {friendStoryList.map((friendStory) => {
+            const user = userLists.find(user => user.accountAddress === friendStory.friendAddress);
+            if (user) {
+              return (
+                friendStory.stories.length !== 0 &&
+                <Story 
+                  storyList={friendStory.stories}
+                  username={friendStory.friendName}
+                  friendAddress={friendStory.friendAddress}
+                  isFriend={true}
+                  userImage={user.profileImage}
+                />
+              );
+            }
+            return null; // Handle case where user is not found
+          })}
       </div>
       </div>
       <div className={Style.alluser_info}>

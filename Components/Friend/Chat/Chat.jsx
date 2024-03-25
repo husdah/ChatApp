@@ -2,7 +2,7 @@ import React,{useEffect, useState, useContext} from "react";
 import Image from 'next/image';
 import { useRouter } from 'next/router'
 import FsLightbox from "fslightbox-react";
-import { FaImage, FaFilePdf, FaFile, FaFileVideo, FaUserCircle } from "react-icons/fa"
+import { FaImage, FaFilePdf, FaFile, FaFileVideo } from "react-icons/fa"
 import { IoMdAttach } from "react-icons/io"
 import data from '@emoji-mart/data'
 import Picker from '@emoji-mart/react'
@@ -197,26 +197,33 @@ const Chat = ({
 
                 {
                   el.audioData && (
-                    <AudioMsg audioDataHash={el.audioData} />
+                    <div className={Style.fileContainer}>
+                      <AudioMsg audioDataHash={el.audioData} />
+                    </div>  
                   )
                 }
 
             {el.fileHash && el.msgType === "image" ? (
-              <div onClick={() => openLightboxForImage(i)}>
+              <div className={Style.fileContainer} onClick={() => openLightboxForImage(i)}>
                 <Image
                   src={`https://magenta-obliged-rodent-373.mypinata.cloud/ipfs/${el.fileHash}?pinataGatewayToken=TBXq_-pyK84EaMuFE5zEUB-DcgITbYLhjgxuxpt9qgJCVYmk9tY0SgCS1_DhuDmd`}
                   alt="image"
-                  width={100}
-                  height={100}
+                  width={150}
+                  height={150}
                 />
               </div>
             ) : el.fileHash && el.msgType === "file" ? (
-              <a href={`https://magenta-obliged-rodent-373.mypinata.cloud/ipfs/${el.fileHash}?pinataGatewayToken=TBXq_-pyK84EaMuFE5zEUB-DcgITbYLhjgxuxpt9qgJCVYmk9tY0SgCS1_DhuDmd`} target="_blank" download={true}>
-                <FaFile size={100} />
-              </a>
+              <div className={Style.fileContainer}>
+                <a href={`https://magenta-obliged-rodent-373.mypinata.cloud/ipfs/${el.fileHash}?pinataGatewayToken=TBXq_-pyK84EaMuFE5zEUB-DcgITbYLhjgxuxpt9qgJCVYmk9tY0SgCS1_DhuDmd`} target="_blank" download={true}>
+                  <FaFile size={100} />
+                </a>
+              </div>
             ) : el.fileHash && el.msgType === "video" ? (
-              <div onClick={() => openLightboxForImage(i)}>
-                <FaFileVideo size={100} />
+              <div className={Style.fileContainer}>
+                <video controls width={150} height={150}>
+                  <source src={`https://magenta-obliged-rodent-373.mypinata.cloud/ipfs/${el.fileHash}?pinataGatewayToken=TBXq_-pyK84EaMuFE5zEUB-DcgITbYLhjgxuxpt9qgJCVYmk9tY0SgCS1_DhuDmd`} type="video/mp4" />
+                  Your browser does not support the video tag.
+                </video>
               </div>
             ) : null}
 

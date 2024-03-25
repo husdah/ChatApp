@@ -9,13 +9,14 @@ import LanguageSelector from '../Modal/LanguageSelector';
 import ThemeSelector from "../Modal/ThemeSelector";
 import { useTranslation } from 'react-i18next';
 import { FaAngleDown } from 'react-icons/fa';
+import { useRouter } from 'next/router'; // Import useRouter hook
 
 const NavBar = () => {
 
   const { t, i18n } = useTranslation();
   const { account, userName, userImage, connectWallet, createAccount, error, updateUsername, updateUserProfileImage } = useContext(ChatAppContext);
-
-  const [active, setActive] = useState(2);
+ 
+  //const [active, setActive] = useState(2);
   const [open, setOpen] = useState(false);
   const [openModel, setOpenModel] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
@@ -28,9 +29,18 @@ const NavBar = () => {
     { menu: t('navbar.chat'), link: '/' },
     { menu: t('navbar.contact'), link: '/contact' },
     { menu: t('navbar.settings'), link: '/' },
-    { menu: t('navbar.faqs'), link: 'faq' },
+    { menu: t('navbar.faqs'), link: '/faq' },
     { menu: t('navbar.termsOfUse'), link: '/terms' }
   ];
+
+  const router = useRouter(); // Initialize useRouter hook
+  // Determine active link based on the current URL
+  const getActiveIndex = () => {
+    const currentPath = router.pathname;
+    const index = menuItems.findIndex(item => item.link === currentPath);
+    return index >= 0 ? index + 1 : 1; // If not found, default to 1st index
+  };
+  const [active, setActive] = useState(getActiveIndex()); // Set initial active state based on URL
 
   useEffect(() => {
     const storedTheme = localStorage.getItem('theme');

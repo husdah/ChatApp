@@ -147,3 +147,19 @@
 .btn_editImage:hover {
     box-shadow: 1px 1px 10px var(--dark);
 }
+
+@media only screen and (max-width: 425px) {
+    .modal_container {
+        overflow-y: scroll;
+        padding-bottom: 50px;
+    }
+    .modal {
+        margin-right: 13px;
+    }
+}
+
+@media only screen and (max-width: 375px) {
+    .modal {
+        margin: 20px;
+    }
+}

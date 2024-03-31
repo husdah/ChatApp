@@ -25,3 +25,9 @@ Achievements:
 - Empowers users to shape the future of social networking
 - Seamless feedback process for patients
 - Offers comprehensive features for account customization, group chats, and multimedia messaging
+
+Team:
+- Hussein Daher
+- Haya Tfaily
+- Loreen Baker
+- Zeinab Hijazi
